@@ -1,0 +1,554 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Mobile%20Friendly%20Orion')))()
+
+OrionLib:MakeNotification({
+	Name = "Budgie Hub",
+	Content = '<p><font color="rgb(255, 255, 0)">Loading start</font></p>',
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+local Window = OrionLib:MakeWindow({Name = "Budgie Hub | Universal", HidePremium = true, IntroEnabled = false, SaveConfig = false, ConfigFolder = "OrionTest"})
+
+local Tab = Window:MakeTab({
+ Name = "Info",
+ Icon = "rbxassetid://4483345998",
+ PremiumOnly = false
+})
+
+local information = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://ipapi.co/json/"))
+task.wait(0.1)
+local api = loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/API/refs/heads/main/Api.lua"))()
+task.wait(0.1)
+local information2 = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://ipinfo.io/json"))
+task.wait(0.1)
+
+local LP = game.Players.LocalPlayer
+local realUser = LP.CharacterAppearanceId
+
+getgenv().AntiAfkOn = true
+ if getgenv().AntiAfkOn == true then
+ for i,v in pairs(getconnections(LP.Idled)) do
+  v:Disable()
+ end
+end
+
+local infoText = "The information was obtained through your internet\n The script will correctly detect the script if you run the script via Wi-Fi, but will not work if you run it via a mobile network, for example tele2\n " .. "\n" ..
+                 "IP: " .. information.ip .. "\n" ..
+                 "Country: " .. information.country .. "\n" ..
+                 "City: " .. information.city .. "\n" ..
+                 "Region: " .. information.region .. "\n" .. 
+                 "°N: " .. information.latitude .. "\n" .. 
+                 "°W: " .. information.longitude .. "\n" .. 
+                 "ASN: " .. information.asn .. "\n" ..
+                 "Network owner: " .. information.org .. "\n" ..
+                 "Protocol: " .. information.version .. "\n" ..
+                 "Postal: " .. information2.postal .. "\n" ..
+                 "Time zone: " .. information2.timezone .. "\n" ..
+                 "HWID: " .. (gethwid and gethwid() or "N/A") .. "\n" ..
+                 "Client Id: " .. tostring(game:GetService("RbxAnalyticsService"):GetClientId()) .. "\n" ..
+                 "Exploit: " .. (identifyexecutor and identifyexecutor() or "N/A") .. "\n"
+
+Tab:AddParagraph("LocalPlayer Info: ", infoText)
+
+local Tab = Window:MakeTab({
+	Name = "Universal",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+ Name = "Tools"
+})
+
+Tab:AddButton({
+ Name = "Equip all tools",
+ Callback = function()
+LP = game.Players.LocalPlayer
+for _, tool in ipairs(LP.Backpack:GetDescendants()) do
+  if tool:IsA("Tool") then
+tool.Parent = LP.Character
+  end
+end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Drop all tools",
+ Callback = function()
+LP = game.Players.LocalPlayer
+LPH = LP.Character.Humanoid
+LPH:UnequipTools()
+ for _, tool in ipairs(LP.Backpack:GetDescendants()) do
+   if tool:IsA("Tool") then
+tool.Parent = LP.Character
+tool.Parent = workspace
+   end
+ end
+   end    
+})
+
+Tab:AddToggle({
+ Name = "Twirl tools",
+ Default = false,
+ Callback = function(Value)
+toggle1 = Value
+while toggle1 and task.wait() do
+ for _, tool in ipairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+   if tool:IsA("Tool") and tool.Handle then
+tool.Grip = CFrame.Angles(math.rad(math.random(-360, 360)), math.rad(math.random(-360, 360)), math.rad(math.random(-360, 360)))
+tool.GripPos = tool.GripPos
+   end
+ end
+end
+ end    
+})
+
+Tab:AddButton({
+ Name = "Random GripPos",
+ Callback = function()
+LP = game.Players.LocalPlayer
+for _, tool in ipairs(LP.Character:GetDescendants()) do
+ if tool:IsA("Tool") then
+tool.GripPos = Vector3.new(math.random(-40, 40), math.random(-25, 25), math.random(-40, 40))
+ end
+end
+
+for _, tool in ipairs(LP.Backpack:GetDescendants()) do
+ if tool:IsA("Tool") then
+tool.GripPos = Vector3.new(math.random(-40, 40), math.random(-25, 25), math.random(-40, 40))
+ end
+end
+   end    
+})
+
+Tab:AddToggle({
+ Name = "Auto click",
+ Default = false,
+ Callback = function(Value)
+LP = game.Players.LocalPlayer
+togeo = Value
+while togeo and task.wait() do
+ for _, tool in ipairs(LP.Character:GetDescendants()) do
+  if tool:IsA("Tool") then
+tool:Activate()
+  end
+ end
+end
+   end    
+})
+
+local Section = Tab:AddSection({
+ Name = "Players Control"
+})
+
+local Section = Tab:AddSection({
+ Name = "Local Humanoid Control"
+})
+
+Tab:AddButton({
+ Name = "Jump Baki Hanma",
+ Callback = function()
+LPH = game.Players.LocalPlayer.Character.Humanoid
+LPH.Jumping:Connect(function()
+LPH.RootPart.Velocity = LPH.RootPart.CFrame.LookVector * 200 + Vector3.new(0, 150, 0)
+end)
+   end    
+})
+
+Tab:AddTextbox({
+ Name = "Attract to player",
+ Default = "",
+ TextDisappear = true,
+ Callback = function(Value)
+LPH = game.Players.LocalPlayer.Character.Humanoid
+   local player = api:GetPlayerByLowerName(Value)
+if player and player ~= LP then
+repeat task.wait()
+LPH:ChangeState("FallingDown")
+LPH.RootPart.Velocity += (player.Character.HumanoidRootPart.Position - LPH.RootPart.Position).Unit * 200
+until LPH.Health <= 0
+end
+ end   
+})
+
+Tab:AddTextbox({
+ Name = "Locked to player",
+ Default = "",
+ TextDisappear = true,
+ Callback = function(Value)
+LPH = game.Players.LocalPlayer.Character.Humanoid
+LP = game.Players.LocalPlayer
+  local player = api:GetPlayerByLowerName(Value)
+   if player and player ~= LP then
+repeat task.wait()
+LPH.RootPart.CFrame = player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+until LPH.Health <= 0
+   end
+ end   
+})
+
+Tab:AddToggle({
+ Name = "Anti velocity",
+ Default = false,
+ Callback = function(Value)
+toggle2 = Value
+LPH = game.Players.LocalPlayer.Character.Humanoid
+while toggle2 and task.wait() do
+ if LPH.RootPart.Velocity.Magnitude >= 40 then
+LPH.RootPart.Velocity = Vector3.zero
+ end
+end
+ end    
+})
+
+Tab:AddToggle({
+ Name = "Anti velocity v2",
+ Default = false,
+ Callback = function(Value)
+ttooo = Value
+LPH = game.Players.LocalPlayer.Character.Humanoid
+while ttooo and task.wait() do
+ for _, child in ipairs(LPH.RootPart:GetDescendants()) do
+   if child:IsA("BodyVelocity") or child:IsA("BodyThrust") or child:IsA("BodyAngularVelocity") or child:IsA("AngularVelocity") or child:IsA("Glue") or child:IsA("RopeConstraint") or child:IsA("HingeConstraint") or child:IsA("BallSocketConstraint") or child:IsA("BodyGyro") or child:IsA("RocketPropulsion") and ttooo then
+child:Destroy()
+   end
+ end
+end
+ end    
+})
+
+Tab:AddToggle({
+ Name = "Anti sit",
+ Default = false,
+ Callback = function(Value)
+toggle3 = Value
+LPH = game.Players.LocalPlayer.Character.Humanoid
+LPH.Changed:Connect(function(prop)
+  if prop == "Sit" and toggle3 then
+LPH.Sit = false
+  end
+end)
+ end    
+})
+
+Tab:AddButton({
+ Name = "Check Health",
+ Callback = function()
+LPH = game.Players.LocalPlayer.Character.Humanoid
+OrionLib:MakeNotification({
+	Name = "Budgie Hub",
+	Content = "HP: " .. tostring(LPH.Health) .. " / " .. tostring(LPH.MaxHealth),
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+   end    
+})
+
+Tab:AddButton({
+ Name = "Helicopter",
+ Callback = function()
+LPH = game.Players.LocalPlayer.Character.Humanoid
+local spin = 0
+bodyvel = Instance.new("BodyAngularVelocity", LPH.RootPart)
+bodyvel.MaxTorque = Vector3.new(0, math.huge, 0)
+bodyvel.AngularVelocity = Vector3.new(0, 0.1, 0)
+
+local sound = Instance.new("Sound", LPH.RootPart)
+sound.SoundId = "rbxassetid://8578316223"
+sound.Volume = 2.5
+sound.PlaybackSpeed = 1
+sound.Looped = true
+sound:Play()
+
+repeat wait() until sound.IsPlaying
+spawn(function()
+repeat wait()
+spin += 0.1
+bodyvel.AngularVelocity += Vector3.new(0, spin, 0)
+until LPH.Health <= 0
+end)
+
+ task.wait(12)
+LPH.Health = 0
+LPH.Parent:BreakJoints()
+   end    
+})
+
+Tab:AddButton({
+ Name = "-2000 aura",
+ Callback = function()
+LPH = game.Players.LocalPlayer.Character.Humanoid
+LPH.RootPart.Velocity = LPH.RootPart.CFrame.LookVector * -300
+LPH:ChangeState("FallingDown")
+
+sound = Instance.new("Sound", game.Workspace)
+sound.SoundId = "rbxassetid://6794882849"
+sound.Volume = 2
+sound.TimePosition = 0.99
+sound.PlaybackSpeed = 1
+sound.Looped = false
+sound:Play()
+   end    
+})
+
+Tab:AddTextbox({
+ Name = "Velocity fly",
+ Default = "power",
+ TextDisappear = true,
+ Callback = function(Value)
+LP = game.Players.LocalPlayer
+LPH = LP.Character.Humanoid
+LPH.PlatformStand = true
+Mouse = LP:GetMouse()
+
+local det = Mouse.Button1Down:Connect(function()
+ LPH.RootPart.Velocity = (LPH.RootPart.Position - Mouse.Hit.Position).Unit * -(tonumber(Value))
+end)
+
+spawn(function()
+  repeat wait()
+LPH.PlatformStand = true
+   if LPH.Health <= 0 then
+     det:Disconnect()
+   end
+  until LPH.Health <= 0
+end)
+ end   
+})
+
+Tab:AddButton({
+ Name = "Flappy bird fly",
+ Callback = function()
+LP = game.Players.LocalPlayer
+LPH = LP.Character.Humanoid
+LPH.PlatformStand = true
+Mouse = LP:GetMouse()
+
+local deta = Mouse.Button1Down:Connect(function()
+ LPH.RootPart.Velocity = (LPH.RootPart.Position - Mouse.Hit.Position).Unit * -125 + Vector3.new(0, 80, 0)
+sound = Instance.new("Sound", LPH.RootPart)
+sound.SoundId = "rbxassetid://271111328"
+sound.Volume = 1
+sound.PlaybackSpeed = 1
+sound.Looped = false
+sound:Play()
+end)
+
+spawn(function()
+  repeat wait()
+LPH.PlatformStand = true
+   if LPH.Health <= 0 then
+     deta:Disconnect()
+   end
+  until LPH.Health <= 0
+end)
+   end    
+})
+
+local Section = Tab:AddSection({
+ Name = "Parts Control"
+})
+
+Tab:AddButton({
+ Name = "Bring all unanchored",
+ Callback = function()
+for _, part in ipairs(workspace:GetDescendants()) do
+  if part:IsA("BasePart") and part.Anchored == false then
+part.CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
+  end
+end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Grab tool",
+ Callback = function()
+local tool = Instance.new("Tool", LP.Backpack)
+tool.Name = "Grab tool"
+tool.RequiresHandle = false
+
+tool.Activated:Connect(function()
+ local mouset = LP:GetMouse().Target
+  if mouset and mouset.Anchored == false then
+local partTweenn2 = game:GetService("TweenService"):Create(mouset, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
+        CFrame = LP.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
+    })
+    partTweenn2:Play()
+  end
+end)
+   end    
+})
+
+Tab:AddToggle({
+ Name = "Attract parts",
+ Default = false,
+ Callback = function(Value)
+yn = Value
+while yn and task.wait(0.2) do
+   for _, part in ipairs(workspace:GetDescendants()) do
+      if part:IsA("BasePart") and not part.Anchored and part.Parent ~= LP.Character and not game.Players:GetPlayerFromCharacter(part.Parent) then
+ part.Velocity = (LP.Character.HumanoidRootPart.Position - part.Position).Unit * 150
+      end
+   end
+end
+ end    
+})
+
+Tab:AddToggle({
+ Name = "Inviolable to objects",
+ Default = false,
+ Callback = function(Value)
+yun = Value
+   while yun and task.wait() do
+     for _, part in ipairs(LP.Character:GetDescendants()) do
+       if part:IsA("BasePart") then
+         part.CanTouch = not yun
+       end
+     end
+   end
+ end    
+})
+
+local Section = Tab:AddSection({
+ Name = "Lighting Control"
+})
+
+Tab:AddToggle({
+ Name = "Fulbright",
+ Default = false,
+ Callback = function(Value)
+
+ end    
+})
+
+Tab:AddButton({
+ Name = "Remove effects",
+ Callback = function()
+for _, light in ipairs(game.Lighting:GetDescendants()) do
+ if light:IsA("BlurEffect") or light:IsA("BloomEffect") or light:IsA("ColorCorrectionEffect") or light:IsA("SunRaysEffect") then
+light:Destroy()
+ end
+end
+ end    
+})
+
+local Section = Tab:AddSection({
+ Name = "CoreGui Control"
+})
+
+local Section = Tab:AddSection({
+ Name = "NPC Control"
+})
+
+Tab:AddToggle({
+ Name = "Kill nearest",
+ Default = false,
+ Callback = function(Value)
+yoo = Value
+while yoo and task.wait() do
+sethiddenproperty(LP, "SimulationRadius", 112412400000)
+sethiddenproperty(LP, "MaxSimulationRadius", 112412400000)
+for i,d in pairs(game.Workspace:GetDescendants()) do
+    if d.ClassName == 'Humanoid' and not game.Players:FindFirstChild(d.Parent.Name) then
+        d.Health = 0
+        d:ChangeState("Dead")
+    end
+  end
+end
+ end    
+})
+
+Tab:AddToggle({
+ Name = "Push nearest",
+ Default = false,
+ Callback = function(Value)
+myyy = Value
+while myyy and task.wait() do
+ sethiddenproperty(LP, "SimulationRadius", 112412400000)
+sethiddenproperty(LP, "MaxSimulationRadius", 112412400000)
+for i,d in pairs(game.Workspace:GetDescendants()) do
+    if d.ClassName == 'Humanoid' and not game.Players:FindFirstChild(d.Parent.Name) then
+        d.RootPart.Velocity = (LP.Character.HumanoidRootPart.Position - d.RootPart.Position).Unit * -200
+    end
+ end
+end
+ end    
+})
+
+Tab:AddToggle({
+ Name = "Attract nearest",
+ Default = false,
+ Callback = function(Value)
+hhh = Value
+   while hhh and task.wait() do
+sethiddenproperty(LP, "SimulationRadius", 112412400000)
+sethiddenproperty(LP, "MaxSimulationRadius", 112412400000)
+for i, d in pairs(game.Workspace:GetDescendants()) do
+    if d.ClassName == 'Humanoid' and not game.Players:FindFirstChild(d.Parent.Name) then
+        d.RootPart.Velocity = (LP.Character.HumanoidRootPart.Position - d.RootPart.Position).Unit * -150
+    end
+end
+   end
+ end    
+})
+
+local Section = Tab:AddSection({
+ Name = "Chat Control"
+})
+
+local Section = Tab:AddSection({
+ Name = "Camera Control"
+})
+
+local Section = Tab:AddSection({
+ Name = "Animation Control"
+})
+
+local Section = Tab:AddSection({
+ Name = "Gui and Keyboard Control"
+})
+
+Tab:AddToggle({
+ Name = "Remove Disconnect Errors",
+ Default = false,
+ Callback = function(Value)
+togg = Value
+  while togg and task.wait() do
+game:GetService("GuiService"):ClearError()
+  end
+ end    
+})
+
+Tab:AddToggle({
+ Name = "Remove Gameplay Paused",
+ Default = false,
+ Callback = function(Value)
+togel = not Value
+  game:GetService("GuiService"):SetGameplayPausedNotificationEnabled(togel)
+ end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Game",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Tab = Window:MakeTab({
+	Name = "Other hubs",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Tab = Window:MakeTab({
+	Name = "Creator",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+OrionLib:MakeNotification({
+	Name = "Budgie Hub",
+	Content = '<p><font color="rgb(0, 255, 0)">The script has been fully loaded</font></p>',
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
