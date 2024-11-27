@@ -722,7 +722,201 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-Tab:AddParagraph("ADSKer", '<p><font color="rgb(0, 0, 0)">creator of this hub script and almost all functions: ADSKer</font></p>')
+Tab:AddParagraph("ADSKer", '<p><font color="rgb(255, 0, 0)">creator of this hub script and almost all functions: ADSKer</font></p>')
+
+local Section = Tab:AddSection({
+ Name = "By me (I havent updated many scripts)"
+})
+
+Tab:AddButton({
+ Name = "Public bathroom simulator",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Budgie-Hub/main/PublicBathroomSimulator"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Push the dummies into sparta hole",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Push-Dummies-In-The-Sparta-Hole/main/FireInTheHole"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Revenge of the slimes",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Revenge-of-the-Slimes/main/Slime"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Bendy and the ink machine",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Bendy/main/BendyHubX"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Infectious smile",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/SmileGUI/main/SmileHax33"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Free admin",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/FreeAdmin/main/GUI"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Lucky blocks battlegrounds",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/LuckyBlock/main/LuckyGUI"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Backrooms redacted",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/BACKROOMS/main/RedactedSurvival"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Lift of legends simulator",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Lift/main/LiftOfLegendsSimulator"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Slap battles but you get random glove",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Slap-Battles/main/Random"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Sukuna battlegrounds",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/html-simple-clock/main/script.lua"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Client Replication",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Budgie-Hub_Client-Replication/main/Script"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "AnM battlegrounds",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/C/refs/heads/main/calculator"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "KJ battlegrounds",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/ADSK_KJB/refs/heads/main/Source"))()
+   end    
+})
+
+local Section = Tab:AddSection({
+ Name = "By me but these scripts are not posted:\n And I made these scripts a long time ago"
+})
+
+Tab:AddButton({
+ Name = "Doge head escape",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Main/main/DogeHeadEscape"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Autput",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Autput/main/Autputus"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Void hub",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Voidhub.lua/main/VoidHub.lua"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Old version BendyHubX",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/ADSKerOfficial314/main/BendyAndInkMachine"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Catalog avatar creator",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Catalog-Avatar-Creator/main/CatalogHub"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Beat up dummies simulator",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Beat-Up-Dummies/main/Dummies"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Legends of speed",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Legends-Of-Speed/main/SpeedHub"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Orb tree incremental",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/OrbTree/main/Incremental"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Xsploit",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Xsploit/main/XsploitNew"))()
+   end    
+})
+
+local Section = Tab:AddSection({
+ Name = "Misc"
+})
+
+Tab:AddButton({
+ Name = "Astaroth",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/UniversalCharacter/main/Astarot"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Newer Astaroth",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Character-Monster/refs/heads/main/Astaroth"))()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Chronos (Meta Guardian)",
+ Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Character-Monster/refs/heads/main/Chronos"))()
+   end    
+})
 
 OrionLib:MakeNotification({
 	Name = "Budgie Hub",
