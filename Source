@@ -22,6 +22,17 @@ task.wait(0.1)
 local information2 = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://ipinfo.io/json"))
 task.wait(0.1)
 
+local syst = ""
+local GS = game:GetService("GuiService")
+local UIS = game:GetService("UserInputService")
+    if (GS:IsTenFootInterface()) then
+        syst = "Console"
+    elseif (UIS.TouchEnabled and not UIS.MouseEnabled) then
+        syst = "Mobile"
+    else
+        return "PC"
+    end
+
 local LP = game.Players.LocalPlayer
 local realUser = LP.CharacterAppearanceId
 
@@ -46,6 +57,7 @@ local infoText = "The information was obtained through your internet\n The scrip
                  "Time zone: " .. information2.timezone .. "\n" ..
                  "HWID: " .. (gethwid and gethwid() or "N/A") .. "\n" ..
                  "Client Id: " .. tostring(game:GetService("RbxAnalyticsService"):GetClientId()) .. "\n" ..
+                 "Proposed device: " .. tostring(syst) .. "\n" ..
                  "Exploit: " .. (identifyexecutor and identifyexecutor() or "N/A") .. "\n"
 
 Tab:AddParagraph("LocalPlayer Info: ", infoText)
