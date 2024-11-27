@@ -43,6 +43,14 @@ getgenv().AntiAfkOn = true
  end
 end
 
+getgenv().AntiPartCheatBypass = true
+spawn(function()
+  while getgenv().AntiPartCheatBypass and game:GetService("RunService").Heartbeat:Wait() do
+sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", math.huge)
+  end
+end)
+
 local infoText = "The information was obtained through your internet\n The script will correctly detect the script if you run the script via Wi-Fi, but will not work if you run it via a mobile network, for example tele2\n " .. "\n" ..
                  "IP: " .. information.ip .. "\n" ..
                  "Country: " .. information.country .. "\n" ..
@@ -567,6 +575,72 @@ local Section = Tab:AddSection({
  Name = "CoreGui Control"
 })
 
+Tab:AddDropdown({
+	Name = "Enable CoreGui",
+	Default = "E",
+	Options = {"Enable reset", "Enable inventory", "Enable emotes", "Enable leaderboard", "Enable chat"},
+	Callback = function(Value)
+		if Value == "Enable reset" then
+		local StarterGui = game:GetService("StarterGui")
+StarterGui:SetCore("ResetButtonCallback",true)
+end
+       if Value == "Enable inventory" then
+local StarterGui = game:GetService("StarterGui")
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true)
+end
+      if Value == "Enable emotes" then
+      game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false)
+      end
+      if Value == "Enable leaderboard" then
+      sgui = game:GetService("StarterGui")
+sgui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
+end
+      if Value == "Enable chat" then
+      local sgui = game:GetService("StarterGui")
+sgui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
+end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "Disable CoreGui",
+	Default = "E",
+	Options = {"Disable reset", "Disable inventory", "Disable emotes", "Disable leaderboard", "Disable chat"},
+	Callback = function(Value)
+		if Value == "Enable reset" then
+		local StarterGui = game:GetService("StarterGui")
+StarterGui:SetCore("ResetButtonCallback",false)
+end
+       if Value == "Disable inventory" then
+local StarterGui = game:GetService("StarterGui")
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
+end
+      if Value == "Disable emotes" then
+      local StarterGui = game:GetService("StarterGui")
+      StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false)
+      end
+      if Value == "Disable leaderboard" then
+      sgui = game:GetService("StarterGui")
+sgui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+      end
+      if Value == "Disable chat" then
+      local sgui = game:GetService("StarterGui")
+sgui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
+      end
+	end    
+})
+
+Tab:AddToggle({
+ Name = "Cycle through everything",
+ Default = false,
+ Callback = function(Value)
+vgj = Value
+   while vgj and game:GetService("RunService").Heartbeat:Wait() do
+game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
+   end
+ end    
+})
+
 local Section = Tab:AddSection({
  Name = "NPC Control"
 })
@@ -650,6 +724,26 @@ end
 
 local Section = Tab:AddSection({
  Name = "Camera Control"
+})
+
+Tab:AddTextbox({
+ Name = "FOV",
+ Default = "70",
+ TextDisappear = true,
+ Callback = function(Value)
+local partTweenn2 = game:GetService("TweenService"):Create(workspace.CurrentCamera, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
+        FieldOfView = tonumber(Value)
+    })
+    partTweenn2:Play()
+ end   
+})
+
+Tab:AddButton({
+ Name = "Infinite Max Zoom",
+ Callback = function()
+        game.Players.LocalPlayer.CameraMaxZoomDistance = math.huge
+        game.Players.LocalPlayer.CameraMinZoomDistance = 0
+   end    
 })
 
 local Section = Tab:AddSection({
