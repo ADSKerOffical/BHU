@@ -43,14 +43,6 @@ getgenv().AntiAfkOn = true
  end
 end
 
-getgenv().AntiPartCheatBypass = true
-spawn(function()
-  while getgenv().AntiPartCheatBypass and game:GetService("RunService").Heartbeat:Wait() do
-sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", math.huge)
-  end
-end)
-
 local infoText = "The information was obtained through your internet\n The script will correctly detect the script if you run the script via Wi-Fi, but will not work if you run it via a mobile network, for example tele2\n " .. "\n" ..
                  "IP: " .. information.ip .. "\n" ..
                  "Country: " .. information.country .. "\n" ..
@@ -546,6 +538,14 @@ for _, part in ipairs(workspace:GetDescendants()) do
 end
         end
     end    
+})
+
+Tab:AddButton({
+ Name = "Infinite Simulation Radius",
+ Callback = function()
+sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", math.huge)
+ end    
 })
 
 local Section = Tab:AddSection({
