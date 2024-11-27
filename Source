@@ -137,6 +137,23 @@ end
    end    
 })
 
+Tab:AddButton({
+ Name = "Disable tool handle collision",
+ Callback = function()
+for _, tool in ipairs(LP.Character:GetDescendants()) do
+  if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
+tool.Handle.CanCollide = false
+  end
+end
+
+for _, tool in ipairs(LP.Backpacl:GetDescendants()) do
+  if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
+tool.Handle.CanCollide = false
+  end
+end
+   end    
+})
+
 local Section = Tab:AddSection({
  Name = "Players Control"
 })
@@ -345,6 +362,46 @@ end)
    end    
 })
 
+Tab:AddDropdown({
+	Name = "Player mass",
+	Default = "",
+	Options = {"Very heavy mass", "Normal mass", "Zero mass"},
+	Callback = function(Value)
+		if Value == "Very heavy mass" then
+		local plr = game.Players.LocalPlayer
+local char = plr.Character
+  for _, child in pairs(char:GetChildren()) do
+    if child:IsA("BasePart") then
+      child.Massless = false
+      child.CustomPhysicalProperties = PhysicalProperties.new(math.huge, math.huge, math.huge) 
+    end
+  end
+		end
+		if Value == "Normal mass" then
+		local plr = game.Players.LocalPlayer
+local char = plr.Character
+
+  for _, child in pairs(char:GetChildren()) do
+    if child:IsA("BasePart") then
+      child.Massless = false
+      child.CustomPhysicalProperties = PhysicalProperties.new(1, 0.3, 0.5) 
+    end
+  end
+		end
+		if Value == "Zero mass" then
+		local plr = game.Players.LocalPlayer
+local char = plr.Character
+
+  for _, child in pairs(char:GetChildren()) do
+    if child:IsA("BasePart") then
+      child.Massless = false
+      child.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0) 
+    end
+  end
+		end
+	end    
+})
+
 local Section = Tab:AddSection({
  Name = "Parts Control"
 })
@@ -407,6 +464,68 @@ yun = Value
      end
    end
  end    
+})
+
+Tab:AddDropdown({
+    Name = "Mass Unanchored Objects",
+    Default = "koop",
+    Options = {"Very heavy parts", "Normal parts", "Very lightweight parts"},
+    Callback = function(Value)
+        if Value == "Very heavy parts" then
+        local Players = game:GetService("Players")
+local function isPartOfPlayerCharacter(part)
+    for _, player in ipairs(Players:GetPlayers()) do
+        local character = player.Character
+        if character and part:IsDescendantOf(character) then
+            return true
+        end
+    end
+    return false
+end
+
+for _, part in ipairs(workspace:GetDescendants()) do
+    if part:IsA("BasePart") and not isPartOfPlayerCharacter(part) then
+        part.CustomPhysicalProperties = PhysicalProperties.new(9e999, 0, 0, 9e999, 9e999)
+    end
+end
+        end
+        if Value == "Normal parts" then
+        local Players = game:GetService("Players")
+local function isPartOfPlayerCharacter(part)
+    for _, player in ipairs(Players:GetPlayers()) do
+        local character = player.Character
+        if character and part:IsDescendantOf(character) then
+            return true
+        end
+    end
+    return false
+end
+
+for _, part in ipairs(workspace:GetDescendants()) do
+    if part:IsA("BasePart") and not isPartOfPlayerCharacter(part) then
+        part.CustomPhysicalProperties = PhysicalProperties.new(1, 1, 1, 1, 1)
+    end
+end
+        end
+        if Value == "Very lightweight parts" then
+        local Players = game:GetService("Players")
+local function isPartOfPlayerCharacter(part)
+    for _, player in ipairs(Players:GetPlayers()) do
+        local character = player.Character
+        if character and part:IsDescendantOf(character) then
+            return true
+        end
+    end
+    return false
+end
+
+for _, part in ipairs(workspace:GetDescendants()) do
+    if part:IsA("BasePart") and not isPartOfPlayerCharacter(part) then
+        part.CustomPhysicalProperties = PhysicalProperties.new(-9e9999, 9e9999, 0, 0, 0)
+    end
+end
+        end
+    end    
 })
 
 local Section = Tab:AddSection({
@@ -485,7 +604,8 @@ sethiddenproperty(LP, "SimulationRadius", 112412400000)
 sethiddenproperty(LP, "MaxSimulationRadius", 112412400000)
 for i, d in pairs(game.Workspace:GetDescendants()) do
     if d.ClassName == 'Humanoid' and not game.Players:FindFirstChild(d.Parent.Name) then
-        d.RootPart.Velocity = (LP.Character.HumanoidRootPart.Position - d.RootPart.Position).Unit * -150
+        d:ChangeState("FallingDown")
+        d.RootPart.Velocity = (LP.Character.HumanoidRootPart.Position - d.RootPart.Position).Unit * 150
     end
 end
    end
@@ -496,6 +616,26 @@ local Section = Tab:AddSection({
  Name = "Chat Control"
 })
 
+Tab:AddTextbox({
+ Name = "Fire invisible chat message",
+ Default = "",
+ TextDisappear = true,
+ Callback = function(Value)
+   game.Players:Chat(Value)
+ end   
+})
+
+Tab:AddToggle({
+ Name = "Anti chat spy",
+ Default = false,
+ Callback = function(Value)
+ Enab = Value
+ while Enab and task.wait() do
+game.Players:Chat(string.rep("AntiChatSpy", 15))
+end
+ end    
+})
+
 local Section = Tab:AddSection({
  Name = "Camera Control"
 })
@@ -504,8 +644,32 @@ local Section = Tab:AddSection({
  Name = "Animation Control"
 })
 
+Tab:AddButton({
+ Name = "Reset animations",
+ Callback = function()
+        local Humanoid = game.Players.LocalPlayer.Character.Humanoid
+local ActiveTracks = Humanoid:GetPlayingAnimationTracks()
+for _,v in pairs(ActiveTracks) do
+     v:Stop()
+end
+   end    
+})
+
+Tab:AddTextbox({
+	Name = "Animation speed",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		local Humanoid = game.Players.LocalPlayer.Character.Humanoid
+local ActiveTracks = Humanoid:GetPlayingAnimationTracks()
+for _,v in pairs(ActiveTracks) do
+     v:AdjustSpeed(Value)
+end
+	end	  
+})
+
 local Section = Tab:AddSection({
- Name = "Gui and Keyboard Control"
+ Name = "Gui Control"
 })
 
 Tab:AddToggle({
@@ -545,6 +709,8 @@ local Tab = Window:MakeTab({
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
+
+Tab:AddParagraph("ADSKer", '<p><font color="rgb(0, 0, 0)">creator of this hub script and almost all functions: ADSKer</font></p>')
 
 OrionLib:MakeNotification({
 	Name = "Budgie Hub",
