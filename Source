@@ -374,6 +374,21 @@ end)
    end    
 })
 
+Tab:AddToggle({
+ Name = "Basic Noclip",
+ Default = false,
+ Callback = function(Value)
+tyyc = Value
+  while tyyc and game:GetService("RunService").Heartbeat:Wait() do
+for _, part in ipairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+  if part:IsA("BasePart") then
+part.CanCollide = not tyyc
+  end
+end
+  end
+ end    
+})
+
 Tab:AddDropdown({
 	Name = "Player mass",
 	Default = "",
@@ -546,6 +561,146 @@ Tab:AddButton({
 sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
 sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", math.huge)
  end    
+})
+
+Tab:AddToggle({
+ Name = "Infinite Simulation Radius Loop",
+ Default = false,
+ Callback = function(Value)
+geyu = Value
+while geyu and task.wait(0.1) do
+     sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+     sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", math.huge)
+end
+ end    
+})
+
+Tab:AddToggle({
+    Name = "Rotate nearest",
+    Default = false,
+    Callback = function(Value)
+        hhh = Value
+        while hhh and task.wait() do
+            sethiddenproperty(LP, "SimulationRadius", math.huge)
+            sethiddenproperty(LP, "MaxSimulationRadius", math.huge)
+            for _, d in pairs(game.Workspace:GetDescendants()) do
+                if d:IsA('Humanoid') and not game.Players:FindFirstChild(d.Parent.Name) and d.Parent:FindFirstChild("HumanoidRootPart") then
+                    local entityRootPart = d.Parent.HumanoidRootPart
+                    d:ChangeState("FallingDown")
+                    
+                    local angle = tick() * 2
+                    local radius = 20
+                    local targetPosition = LP.Character.HumanoidRootPart.Position + Vector3.new(radius * math.cos(angle), 0, radius * math.sin(angle))
+                    
+                    local direction = (targetPosition - entityRootPart.Position).Unit
+                    entityRootPart.Velocity = direction * 300
+                end
+            end
+        end
+    end    
+})
+
+Tab:AddLabel("     Tools that manipulate objects:")
+
+Tab:AddButton({
+ Name = "Break model",
+ Callback = function()
+        tool = Instance.new("Tool", game.Players.LocalPlayer.Backpack)
+tool.Name = "Break model"
+tool.RequiresHandle = false
+
+tool.Activated:Connect(function()
+ local mouset = game.Players.LocalPlayer:GetMouse().Target
+  if mouset and mouset.Anchored ~= true and not mouset.Parent:FindFirstChildOfClass("Humanoid") then
+mouset.Parent:BreakJoints()
+  end
+end)
+   end    
+})
+
+Tab:AddButton({
+ Name = "Attract part",
+ Callback = function()
+        tool = Instance.new("Tool", game.Players.LocalPlayer.Backpack)
+tool.Name = "Attract part"
+tool.RequiresHandle = false
+
+tool.Activated:Connect(function()
+coroutine.wrap(function()
+ local fyt = game.Players.LocalPlayer:GetMouse().Target
+  if fyt and fyt.Anchored == false then
+   spawn(function()
+     repeat task.wait()
+fyt.CanCollide = false
+fyt.Velocity = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - fyt.Position).Unit * 100
+     until not fyt
+    end)
+   end
+ end)()
+end)
+   end    
+})
+
+Tab:AddButton({
+ Name = "Attract character",
+ Callback = function()
+        tool = Instance.new("Tool", game.Players.LocalPlayer.Backpack)
+tool.Name = "Attract character"
+tool.RequiresHandle = false
+
+tool.Activated:Connect(function()
+coroutine.wrap(function()
+ local fyt = game.Players.LocalPlayer:GetMouse().Target
+  if fyt and fyt.Parent:FindFirstChildOfClass("Humanoid") then
+print("It Humanoid")
+local huma = fyt.Parent:FindFirstChildOfClass("Humanoid")
+   spawn(function()
+     repeat task.wait()
+ for _, part in ipairs(huma.Parent:GetDescendants()) do
+   if part:IsA("BasePart") then
+ part.CanCollide = false
+ part.CanTouch = false
+   end
+ end
+huma.RootPart.Velocity = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - huma.RootPart.Position).Unit * 100
+huma:ChangeState("FallingDown")
+     until not huma
+    end)
+  end
+ end)()
+end)
+   end    
+})
+
+Tab:AddButton({
+ Name = "Attract part with his parent",
+ Callback = function()
+        tool = Instance.new("Tool", game.Players.LocalPlayer.Backpack)
+tool.Name = "Attract part with his parent"
+tool.RequiresHandle = false
+
+tool.Activated:Connect(function()
+coroutine.wrap(function()
+ local fyt = game.Players.LocalPlayer:GetMouse().Target
+  if fyt and fyt.Anchored == false then
+   spawn(function()
+     repeat task.wait()
+fyt.CanCollide = false
+fyt.Velocity = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - fyt.Position).Unit * 100
+   if not fyt.Parent:FindFirstChildOfClass("Humanoid") then
+ fyt.Parent:BreakJoints()
+   end
+ for _, part in ipairs(fyt:GetDescendants()) do
+   if part:IsA("BasePart") then
+ part.Velocity = fyt.Velocity
+   end
+ end
+     until not fyt or not fyt.Parent
+    end)
+   end
+ end)()
+end)
+   end    
 })
 
 local Section = Tab:AddSection({
