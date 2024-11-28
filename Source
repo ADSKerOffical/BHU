@@ -712,14 +712,6 @@ local Section = Tab:AddSection({
  Name = "Lighting Control"
 })
 
-Tab:AddToggle({
- Name = "Fulbright",
- Default = false,
- Callback = function(Value)
-
- end    
-})
-
 Tab:AddButton({
  Name = "Remove effects",
  Callback = function()
@@ -981,6 +973,46 @@ Tab:AddToggle({
 togel = not Value
   game:GetService("GuiService"):SetGameplayPausedNotificationEnabled(togel)
  end    
+})
+
+local Section = Tab:AddSection({
+ Name = "Console Control"
+})
+
+Tab:AddToggle({
+ Name = "Disable console",
+ Default = false,
+ Callback = function(Value)
+if game:GetService("CoreGui"):FindFirstChild("DevConsoleMaster") then
+   game:GetService("CoreGui"):FindFirstChild("DevConsoleMaster").Enabled = not Value
+end
+ end    
+})
+
+Tab:AddButton({
+ Name = "Open console",
+ Callback = function()
+        game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
+   end    
+})
+
+Tab:AddTextbox({
+ Name = "Print green text",
+ Default = "",
+ TextDisappear = true,
+ Callback = function(Value)
+   printColor(Color3.new(0, 1, 0), tostring(Value), 10)
+ end   
+})
+
+Tab:AddTextbox({
+ Name = "Simulate a key press",
+ Default = "",
+ TextDisappear = true,
+ Callback = function(Value)
+local yu = string.byte(tostring(Value))
+    keypress(tonumber(yu))
+ end   
 })
 
 local Tab = Window:MakeTab({
