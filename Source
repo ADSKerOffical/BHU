@@ -575,31 +575,6 @@ end
  end    
 })
 
-Tab:AddToggle({
-    Name = "Rotate nearest",
-    Default = false,
-    Callback = function(Value)
-        hhh = Value
-        while hhh and task.wait() do
-            sethiddenproperty(LP, "SimulationRadius", math.huge)
-            sethiddenproperty(LP, "MaxSimulationRadius", math.huge)
-            for _, d in pairs(game.Workspace:GetDescendants()) do
-                if d:IsA('Humanoid') and not game.Players:FindFirstChild(d.Parent.Name) and d.Parent:FindFirstChild("HumanoidRootPart") then
-                    local entityRootPart = d.Parent.HumanoidRootPart
-                    d:ChangeState("FallingDown")
-                    
-                    local angle = tick() * 2
-                    local radius = 20
-                    local targetPosition = LP.Character.HumanoidRootPart.Position + Vector3.new(radius * math.cos(angle), 0, radius * math.sin(angle))
-                    
-                    local direction = (targetPosition - entityRootPart.Position).Unit
-                    entityRootPart.Velocity = direction * 300
-                end
-            end
-        end
-    end    
-})
-
 Tab:AddLabel("     Tools that manipulate objects:")
 
 Tab:AddButton({
@@ -851,6 +826,31 @@ for i, d in pairs(game.Workspace:GetDescendants()) do
 end
    end
  end    
+})
+
+Tab:AddToggle({
+    Name = "Rotate nearest",
+    Default = false,
+    Callback = function(Value)
+        hhh = Value
+        while hhh and task.wait() do
+            sethiddenproperty(LP, "SimulationRadius", math.huge)
+            sethiddenproperty(LP, "MaxSimulationRadius", math.huge)
+            for _, d in pairs(game.Workspace:GetDescendants()) do
+                if d:IsA('Humanoid') and not game.Players:FindFirstChild(d.Parent.Name) and d.Parent:FindFirstChild("HumanoidRootPart") then
+                    local entityRootPart = d.Parent.HumanoidRootPart
+                    d:ChangeState("FallingDown")
+                    
+                    local angle = tick() * 2
+                    local radius = 20
+                    local targetPosition = LP.Character.HumanoidRootPart.Position + Vector3.new(radius * math.cos(angle), 0, radius * math.sin(angle))
+                    
+                    local direction = (targetPosition - entityRootPart.Position).Unit
+                    entityRootPart.Velocity = direction * 300
+                end
+            end
+        end
+    end    
 })
 
 local Section = Tab:AddSection({
