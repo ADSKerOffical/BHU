@@ -43,6 +43,36 @@ getgenv().AntiAfkOn = true
  end
 end
 
+spawn(function()
+    while task.wait() do
+        local devConsoleMaster = game:GetService("CoreGui"):FindFirstChild("DevConsoleMaster")
+        if devConsoleMaster then 
+            for _, v in pairs(devConsoleMaster:GetDescendants()) do 
+                if v:IsA("TextLabel") then 
+                    v.RichText = true 
+                end 
+            end 
+        end
+    end
+end)
+
+local function printColor(color, text, size)
+    if not typeof(color) == "Color3" then
+        warn("Argument 'color' must be a Color3 object!")
+        return
+    end
+    
+    local r, g, b = color.R * 255, color.G * 255, color.B * 255
+    local colorValue = string.format("%d,%d,%d", r, g, b)
+    
+    local Text = '<font color="rgb(' .. colorValue .. ')"'
+    if size then
+        Text = Text .. ' size="' .. tostring(size) .. '"'
+    end
+    Text = Text .. '>' .. tostring(text) .. '</font>'
+    print(Text)
+end
+
 local infoText = "The information was obtained through your internet\n The script will correctly detect the script if you run the script via Wi-Fi, but will not work if you run it via a mobile network, for example tele2\n " .. "\n" ..
                  "IP: " .. information.ip .. "\n" ..
                  "Country: " .. information.country .. "\n" ..
@@ -1173,3 +1203,5 @@ OrionLib:MakeNotification({
 	Image = "rbxassetid://4483345998",
 	Time = 5
 })
+
+printColor(Color3.new(0, 1, 0), "Budgie Hub has been loaded", 20)
