@@ -196,8 +196,27 @@ end
    end    
 })
 
-local Section = Tab:AddSection({
- Name = "Players Control"
+Tab:AddToggle({
+ Name = "Touch everyone with your handle",
+ Default = false,
+ Callback = function(Value)
+ooj = Value
+while ooj and game:GetService("RunService").RenderStepped:Wait() do
+    local p = game.Players:GetPlayers()
+    for i = 2, #p do local v = p[i].Character
+local tool = LP.Character and LP.Character:FindFirstChildOfClass("Tool")
+            if tool and tool:FindFirstChild("Handle") then
+                tool:Activate()
+                for i,v in next, v:GetChildren() do
+                    if v:IsA("BasePart") then
+                        firetouchinterest(tool.Handle,v,0)
+                        firetouchinterest(tool.Handle,v,1)
+                    end
+                end
+            end
+        end
+     end
+ end    
 })
 
 local Section = Tab:AddSection({
@@ -1005,15 +1024,42 @@ Tab:AddTextbox({
  end   
 })
 
+local Section = Tab:AddSection({
+ Name = "Keyboard / Screen Control"
+})
+
 Tab:AddTextbox({
- Name = "Simulate a key press",
- Default = "",
+ Name = "Simulate key press",
+ Default = "f9",
  TextDisappear = true,
  Callback = function(Value)
-local yu = string.byte(tostring(Value))
-    keypress(tonumber(yu))
+local key = Value
+game:GetService("VirtualInputManager"):SendKeyEvent(true, string.upper(key), false, game)
  end   
 })
+
+Tab:AddTextbox({
+ Name = "Simulate a button press",
+ Default = "UDim (x, y)",
+ TextDisappear = true,
+ Callback = function(Value)
+local inputString = Value
+local x, y = inputString:match("(%d+),%s*(%d+)")
+
+x = tonumber(x)
+y = tonumber(y)
+print(x, y)
+
+if x and y then
+    game:GetService("VirtualInputManager"):SendMouseButtonEvent(x, y, 1, false, nil, 1)
+else
+    warn("Invalid number format")
+end
+ end   
+})
+
+local CVS = workspace.CurrentCamera.ViewportSize
+Tab:AddLabel("Your screen size: " .. tostring(CVS))
 
 local Tab = Window:MakeTab({
 	Name = "Game",
