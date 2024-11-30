@@ -1020,7 +1020,7 @@ Tab:AddTextbox({
  Default = "",
  TextDisappear = true,
  Callback = function(Value)
-   printColor(Color3.new(0, 1, 0), tostring(Value), 10)
+   printColor(Color3.new(0, 1, 0), tostring(Value), 15)
  end   
 })
 
@@ -1029,13 +1029,16 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddTextbox({
- Name = "Simulate key press",
- Default = "f9",
- TextDisappear = true,
- Callback = function(Value)
-local key = Value
-game:GetService("VirtualInputManager"):SendKeyEvent(true, string.upper(key), false, game)
- end   
+    Name = "Simulate key press",
+    Default = "F9",
+    TextDisappear = false,
+    Callback = function(Value)
+if Enum.KeyCode[Value] then
+  game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode[Value], false, game)
+   else
+  printColor(Color3.new(1, 1, 1), "You are trying to use a non-existent KeyCode: " .. tostring(Value) .. " Unable to simulate keypress", 15)
+end
+    end   
 })
 
 Tab:AddTextbox({
@@ -1053,7 +1056,7 @@ print(x, y)
 if x and y then
     game:GetService("VirtualInputManager"):SendMouseButtonEvent(x, y, 1, false, nil, 1)
 else
-    warn("Invalid number format")
+    printColor(Color3.new(1, 1, 1), "Invalid number format", 15)
 end
  end   
 })
