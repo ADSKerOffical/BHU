@@ -119,7 +119,7 @@ end)
 
 local function printColor(color, text, size)
     if not typeof(color) == "Color3" then
-        warn("Argument 'color' must be a Color3 object!")
+        warn("Argument 'color' must be a Color3 object")
         return
     end
     
@@ -134,7 +134,7 @@ local function printColor(color, text, size)
     print(Text)
 end
 
-local infoText = "The information was obtained through your internet\n The script will correctly detect the script if you run the script via Wi-Fi, but will not work if you run it via a mobile network, for example tele2\n " .. "\n" ..
+local infoText = "\n " .. "\n" ..
                  "IP: " .. information.ip .. "\n" ..
                  "Country: " .. information.country .. "\n" ..
                  "City: " .. information.city .. "\n" ..
@@ -151,7 +151,7 @@ local infoText = "The information was obtained through your internet\n The scrip
                  "Proposed device: " .. tostring(syst) .. "\n" ..
                  "Exploit: " .. (identifyexecutor and identifyexecutor() or "N/A") .. "\n"
 
-Tab:AddParagraph("LocalPlayer Info: ", infoText)
+Tab:AddParagraph("Welcome: ", infoText)
 
 local Tab = Window:MakeTab({
 	Name = "Universal",
@@ -977,6 +977,28 @@ Tab:AddToggle({
 game.Players:Chat(string.rep("AntiChatSpy", 15))
 end
  end    
+})
+
+Tab:AddButton({
+ Name = "Check chat version",
+ Callback = function()
+local chatver = game:GetService("TextChatService").ChatVersion
+      if chatver == Enum.ChatVersion.LegacyChatService then
+OrionLib:MakeNotification({
+	Name = "Budgie Hub",
+	Content = "The place uses the old version of chat, you can use ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+        else
+OrionLib:MakeNotification({
+	Name = "Budgie Hub",
+	Content = "The place uses a new version of chat, use TexchatService.TextChannels.RBXGeneral:SendAsync",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+      end
+   end    
 })
 
 local Section = Tab:AddSection({
