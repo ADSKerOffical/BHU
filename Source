@@ -1154,9 +1154,93 @@ local Tab = Window:MakeTab({
 })
 
 local Tab = Window:MakeTab({
-	Name = "Other hubs",
+	Name = "Other",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
+})
+
+local dispThSc = false
+Tab:AddToggle({
+ Name = "Copy activated scripts (there ↓)",
+ Default = false,
+ Callback = function(Value)
+    dispThSc = Value
+ end    
+})
+
+Tab:AddButton({
+ Name = "Display real time",
+ Callback = function()
+OrionLib:MakeNotification({
+	Name = "Budgie Hub",
+	Content = "Your time: " .. tostring(os.date("%H:%M:%S")),
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+       if dispThSc == true then
+  setclipboard('print(os.date("%H:%M:%S"))')
+       end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Make bubble chat",
+ Callback = function()
+ game.Chat:Chat(game.Players.LocalPlayer.Character.Head, "Obama", Enum.ChatColor.White)
+      if dispThSc == true then
+ setclipboard('game.Chat:Chat(game.Players.LocalPlayer.Character.Head, "Obama", Enum.ChatColor.White)')
+OrionLib:MakeNotification({
+ Name = "Budgie Hub",
+ Content = "Copied",
+ Image = "rbxassetid://4483345998",
+ Time = 5
+})
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Anti afk (getconnections version)",
+ Callback = function()
+for i,v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do
+  v:Disable()
+end
+  if dispThSc == true then
+   setclipboard([[
+for i,v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do
+  v:Disable()
+end
+   ]])
+OrionLib:MakeNotification({
+ Name = "Budgie Hub",
+ Content = "Copied",
+ Image = "rbxassetid://4483345998",
+ Time = 5
+})
+  end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Using any texture",
+ Callback = function()
+       if dispThSc == false then
+OrionLib:MakeNotification({
+ Name = "Budgie Hub",
+ Content = "Just copy it",
+ Image = "rbxassetid://4483345998",
+ Time = 5
+})
+        else
+ setclipboard('Decal.Image = "https://www.roblox.com/asset-thumbnail/image?assetId=15767935739&width=768&height=432&format=png"')
+OrionLib:MakeNotification({
+ Name = "Budgie Hub",
+ Content = "Copied (It work only on Decal, Texture and GuiObjects)",
+ Image = "rbxassetid://4483345998",
+ Time = 5
+})
+       end
+   end    
 })
 
 local Tab = Window:MakeTab({
