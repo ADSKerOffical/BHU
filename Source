@@ -5,8 +5,10 @@ local supGames = {
 }
  if table.find(supGames, game.PlaceId) then
 local bindable = Instance.new("BindableFunction")
+local isAnswer = false
 function bindable.OnInvoke(response)
      if response == "Yes" then
+isAnswer = true
  if game.PlaceId == 17750416316 then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/ADSK_KJB/refs/heads/main/Source"))()
  elseif game.PlaceId == 10218821851 then
@@ -47,6 +49,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Felipe/
      end
 end
 
+
 game:GetService("StarterGui"):SetCore("SendNotification", {
 	Title = "Notification",
 	Text = "The script is supported in this game. Do you want to activate the script for this game instead of Budgie Hub Universal?",
@@ -56,7 +59,9 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
 	Button1 = "Yes",
 	Button2 = "No"
 })
- else
+  repeat wait() until isAnswer == true
+end
+
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Mobile%20Friendly%20Orion')))()
 
 OrionLib:MakeNotification({
@@ -1454,9 +1459,7 @@ printColor(Color3.new(0, 1, 0), "Budgie Hub has been loaded", 20)
 
 -- This is done so that the gui does not disappear
 local OrionF = gethui().Orion or nil
-print(OrionF.Name)
  if OrionF ~= nil then
 gethui().Orion.Name = "OrionBudgieHub"
 OrionF = gethui().OrionBudgieHub
  end
-end
