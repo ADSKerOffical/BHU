@@ -44,8 +44,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/LuckyBl
  elseif game.PlaceId == 6205205961 then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Felipe/main/EscapeRinningHead"))()
  end
-   else
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/BHU/refs/heads/main/Source"))()
      end
 end
 
