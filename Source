@@ -1,7 +1,8 @@
 local supGames = {
 17750416316, 10218821851, 1758401491, 4850588087, 4522347649,
 9472371402, 16457183958, 11696357981, 119314673491123, 7002808196, 15259246552,
-14735849025, 5709572883, 394773622, 5985232436, 76703229, 662417684, 6205205961
+14735849025, 5709572883, 394773622, 5985232436, 76703229, 662417684, 6205205961,
+4850533156, 2214661900, 6961824067
 }
 
 local bindable = Instance.new("BindableFunction")
@@ -13,7 +14,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/ADSK_KJ
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Budgie-Hub_Client-Replication/main/Script"))()
  elseif game.PlaceId == 1758401491 then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Budgie-Hub/main/PublicBathroomSimulator"))()
- elseif game.PlaceId == 4850588087 then
+ elseif game.PlaceId == 4850588087 or game.PlaceId == 4850533156 then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Bendy/main/BendyHubX"))()
  elseif game.PlaceId == 4522347649 then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/FreeAdmin/main/GUI"))()
@@ -43,6 +44,10 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Push-Du
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/LuckyBlock/main/LuckyGUI"))()
  elseif game.PlaceId == 6205205961 then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Felipe/main/EscapeRinningHead"))()
+ elseif game.PlaceId == 2214661900 then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/SIA51/refs/heads/main/Source.lua"))()
+ elseif game.PlaceId == 6961824067 then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/FTAP/refs/heads/main/Source.lua"))()
  end
    else
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/BHUOriginal/refs/heads/main/Source"))()
