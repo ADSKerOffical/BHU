@@ -1,0 +1,81 @@
+getgenv().todata = newcclosure(function(str)
+  return loadstring(tostring(str))()
+end)
+
+getgenv().clonefunc = newcclosure(function(func)
+    return debug.getinfo(func).func or debug.info(func, "f")
+end)
+
+getgenv().isvararg = newcclosure(function(func)
+  return debug.getinfo(func).is_vararg == 1
+end)
+
+getgenv().comparefunctions = newcclosure(function(func1, func2)
+  return debug.getinfo(func1).func == debug.getinfo(func2).func
+end)
+
+getgenv().gettablesarray = newcclosure(function(...)
+    local result = {} 
+    for _, tbl in ipairs({...}) do
+        if type(tbl) == "table" then
+            for _, value in ipairs(tbl) do
+                table.insert(result, value)
+            end
+        end
+    end
+    return result
+end)
+
+getgenv().isadonis = newcclosure(function()
+  for i, v in next, getgc(true) do
+     if typeof(v) == "table" and rawget(v, "Detected") and typeof(rawget(v, "Detected")) == "function" then
+return true
+    end
+  end
+  return false
+end)
+
+getgenv().hasmetatable = newcclosure(function(tabl)
+ return getrawmetatable(tabl) ~= nil
+end)
+
+getgenv().getthreadname = newcclosure(function()
+  if getthreadidentity() == 0 then
+return "Unknown"
+  elseif getthreadidentity() == 1 then
+return "RobloxStudio"
+  elseif getthreadidentity() == 2 then
+return "BaseScript"
+  elseif getthreadidentity() == 3 then
+return "GameScript"
+  elseif getthreadidentity() == 4 then
+return "RobloxScript"
+  elseif getthreadidentity() == 5 then
+return "Command"
+  elseif getthreadidentity() == 6 then
+return "Plugin"
+  elseif getthreadidentity() == 7 then
+return "WebService"
+  elseif getthreadidentity() == 8 then
+return "Replication"
+  end
+end)
+
+getgenv().gettabledates = newcclosure(function(tabl, data)
+  local tah = {}
+   if tabl == nil then
+     error("The table is nil", 0)
+   end
+   if type(data) ~= "string" then
+     error("Unsupported format or non-existent date type", 0)
+   end
+   
+   if type(tabl) == "table" and #tabl >= 1 then
+      for x, v in next, tabl do
+        if type(rawget(tabl, x)) == data then
+  table.insert(tah, rawget(tabl, x))
+        end
+      end
+    end
+    return tah
+end)
