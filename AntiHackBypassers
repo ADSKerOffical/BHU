@@ -68,7 +68,7 @@ end))
 setthreadidentity(7)
 end
 
--- 2) slap battles anti cheat
+-- 2) slap battles and other anti cheat
 if game.PlaceId == 6403373529 then
 local Namecall
  Namecall = hookmetamethod(game, '__namecall', function(self, ...)
@@ -82,3 +82,33 @@ local Namecall
    return Namecall(self, ...)
  end)
 end
+
+if game.PlaceId == 286090429 then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Test2/main/Test2"))()
+end
+  
+if game.PlaceId == 2788229376 then
+local Detectors = {CHECKER_1 = true, TeleportDetect = true, OneMoreTime = true, BANREMOTE = true, KICKREMOTE = true, PERMAIDBAN = true, BreathingHAMON = true}
+
+local mt = getrawmetatable(game)
+local backupnamecall = mt.__namecall
+setreadonly(mt, false)
+
+mt.__namecall = newcclosure(function(...)
+    local method = getnamecallmethod()
+    local args = {...}
+
+    if (method == "FireServer" and tostring(args[1]) == "MainEvent" and Detectors[args[2]]) then
+        return wait(math.huge)
+    end
+
+    if (not checkcaller() and getfenv(1).crash ~= nil and getfenv(1).checkChild ~= nil) then
+        getcallingscript():Destroy()
+        return wait(math.huge)
+    end
+
+    return backupnamecall(...)
+end)
+
+setreadonly(mt, true)
+  end
