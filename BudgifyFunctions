@@ -79,3 +79,101 @@ getgenv().gettabledates = newcclosure(function(tabl, data)
     end
     return tah
 end)
+
+getgenv().getmoreinfo = newcclosure(function(data)
+  if type(data) == "userdata" then
+    if data == game then
+return {
+  getmetatable = getrawmetatable(game),
+  getservices = game:GetChildren(),
+  getthumbnail = "https://www.roblox.com/asset-thumbnail/image?assetId=" .. game.PlaceId .. "&width=432&height=432&format=png"
+}
+    elseif data:IsA("Player") then
+return {
+  hasmodel = {[1] = data:FindFirstChild("Character") ~= nil, [2] = data:FindFirstChild("Character") or data.CharacterAdded:Wait()},
+  getrootpart = hasmodel[2]:WaitForChild("HumanoidRootPart") or game.Players.LocalPlayer:WaitForChild("Character"):WaitForChild("HumanoidRootPart"),
+  isdied = hasmodel[2]:FindFirstChildOfClass("Humanoid"):GetState() == "Dead",
+  friendscount = tonumber(string.gsub(game:HttpGet("https://friends.roblox.com/v1/users/" .. data.UserId .. "/friends/count"), "%D", "")),
+  yourfriend = game.Players.LocalPlayer:IsFriendsWith(data.UserId),
+  lphwid = gethwid(),
+  lpplatform = gethiddenproperty(game.Players.LocalPlayer, "PlatformName"),
+  verified = data.HasVerifiedBadge
+}
+    elseif data:IsA("BasePart") then
+return {
+  hastouch = data:FindFirstChild("TouchInterest"),
+  getparts = workspace:GetPartsInPart(data),
+  getfloorpart = workspace:FindPartOnRay(Ray.new(data.Position, Vector3.new(0, -(data.Size.Y - 4.5), 0)), IgnoreDescendantsObject),
+  isowned = isnetworkowner(data),
+  sleeping = gethiddenproperty(data, "NetworkIsSleeping"),
+  parentisplayer = {[1] = game.Players:GetPlayerFromCharacter(data) ~= nil, [2] = game.Players:GetPlayerFromCharacter(data)},
+  descendantoflp = (data:IsDescendantOf(game.Players.LocalPlayer.Character)),
+  isnil = function()
+    for _, v in next, getnilinstances() do
+      if v.Name == data.Name and v.ClassName == data.ClassName then
+  return {[1] = true, [2] = data}
+      end
+    end
+    return false
+  end
+}
+   elseif data:IsA("Model") then
+return {
+  isplayer = game.Players:GetPlayerFromCharacter(data) ~= nil,
+  gethumanoid = data:FindFirstChildOfClass("Humanoid"),
+  networkowned = (data:FindFirstChild("RootPart") or data:FindFirstChild("HumanoidRooPart") and isnetworkowner(data.RootPart))
+}
+  end
+    elseif type(data) == "number" then
+return {
+  iseven = (data % 2 == 0),
+  isinteger = (data == math.floor(data)), 
+  isnegative = (data < 0)
+}
+    elseif type(data) == "function" then
+return {
+   closure = debug.getinfo(data).what,
+   iscloned = function()
+   for _, funct in next, getfenv() do
+      if debug.getinfo(data).name == debug.getinfo(funct).name or debug.getinfo(data).func == debug.getinfo(funct).func then
+return true
+     end
+   end
+ return false
+ end,
+   ingenv = (_G[data] ~= nil or getgenv()[data] ~= nil),
+   isyield = coroutine.isyieldable(),
+   anonymous = debug.getinfo(data).name == nil
+}
+    elseif type(data) == "string" then
+return {
+   symbols = #data,
+   unsupportedchars = function()
+  local uns = 0
+  for i = 0, #data do 
+    if string.byte(string.sub(data, i, i)) == 225 or string.byte(string.sub(data, i, i)) == 0 then
+   uns += 1 
+    end 
+   end
+  return uns
+  end,
+   bytecode = string.byte(data),
+   reverse = string.reverse(data),
+   fromascii = function() return data end,
+   toascii = function()
+
+   end
+}
+   elseif type(data) == "table" then
+return {
+  readonly = table.isfrozen(data),
+  hasmetatable = function()
+    if isreadonly(data) == false then
+    return getrawmetatable(data) ~= nil
+     else
+     return "unknown"
+    end
+  end
+ }
+  end
+end)
