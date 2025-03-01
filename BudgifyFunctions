@@ -177,3 +177,46 @@ return {
  }
   end
 end)
+
+getgenv().getproperties = newcclosure(function(instance)
+local properties = {}
+    for _, propertyName in ipairs(game:GetService("ReflectionService"):GetPropertyNames(instance.ClassName)) do
+        if instance[propertyName] ~= nil then
+            properties[propertyName] = instance[propertyName]
+        end
+    end
+  return properties
+end)
+
+getgenv().isemptytable = newcclosure(function(tabl)
+  local chekc = 0
+    for i, v in next, tabl do
+      chekc += 1
+    end
+   return chekc == 0
+end)
+
+getgenv().ishiddenproperty = newcclosure(function(var, prop)
+  local yes, err = pcall(function()
+    value = var[prop]
+  end)
+  
+   if yes then
+ return false
+    else
+ local yes2, err = pcall(function()
+   gethiddenproperty(var, prop)
+ end)
+ 
+     if yes2 then
+return true
+      else
+return nil
+     end
+   end
+end)
+
+getgenv().isrenderproperty = newcclosure(function(var, prop)
+  if ishiddenproperty(var, prop) == nil then return nil end
+  return not ishiddenproperty(var, prop)
+end)
