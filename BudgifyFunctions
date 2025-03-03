@@ -88,16 +88,18 @@ return {
   getservices = game:GetChildren(),
   getthumbnail = "https://www.roblox.com/asset-thumbnail/image?assetId=" .. game.PlaceId .. "&width=432&height=432&format=png"
 }
-    elseif data:IsA("Player") then
+    elseif data:IsA("Player") or data.Parent == game.Players then
 return {
-  hasmodel = {[1] = data:FindFirstChild("Character") ~= nil, [2] = data:FindFirstChild("Character") or data.CharacterAdded:Wait()},
-  getrootpart = hasmodel[2]:WaitForChild("HumanoidRootPart") or game.Players.LocalPlayer:WaitForChild("Character"):WaitForChild("HumanoidRootPart"),
-  isdied = hasmodel[2]:FindFirstChildOfClass("Humanoid"):GetState() == "Dead",
+  hasmodel = {[1] = (data.Character ~= nil), [2] = data.Character or data.CharacterAdded:Wait()},
+  getrootpart = data.Character.HumanoidRootPart or data.Character.HumanoidRootPart,
+  isdied = data.Character.Humanoid:GetState() == "Dead",
   friendscount = tonumber(string.gsub(game:HttpGet("https://friends.roblox.com/v1/users/" .. data.UserId .. "/friends/count"), "%D", "")),
   yourfriend = game.Players.LocalPlayer:IsFriendsWith(data.UserId),
   lphwid = gethwid(),
   lpplatform = gethiddenproperty(game.Players.LocalPlayer, "PlatformName"),
-  verified = data.HasVerifiedBadge
+  verified = data.HasVerifiedBadge,
+  rigtype = data.Character.Humanoid.RigType,
+  getaccessories = data.Character.Humanoid:GetAccessories()
 }
     elseif data:IsA("BasePart") then
 return {
@@ -107,7 +109,7 @@ return {
   isowned = isnetworkowner(data),
   sleeping = gethiddenproperty(data, "NetworkIsSleeping"),
   parentisplayer = {[1] = game.Players:GetPlayerFromCharacter(data) ~= nil, [2] = game.Players:GetPlayerFromCharacter(data)},
-  descendantoflp = (data:IsDescendantOf(game.Players.LocalPlayer.Character)),
+  descendantoflp = data:IsDescendantOf(game.Players.LocalPlayer.Character),
   isnil = function()
     for _, v in next, getnilinstances() do
       if v.Name == data.Name and v.ClassName == data.ClassName then
@@ -115,13 +117,14 @@ return {
       end
     end
     return false
-  end
+  end,
+  fantom = (data.CanCollide == false and data.CanTouch == false)
 }
    elseif data:IsA("Model") then
 return {
   isplayer = game.Players:GetPlayerFromCharacter(data) ~= nil,
   gethumanoid = data:FindFirstChildOfClass("Humanoid"),
-  networkowned = (data:FindFirstChild("RootPart") or data:FindFirstChild("HumanoidRooPart") and isnetworkowner(data.RootPart))
+  networkowned = data.Humanoid.RootPart or data.HumanoidRooPart and isnetworkowner(data.HumanoidRootPart)
 }
   end
     elseif type(data) == "number" then
@@ -157,12 +160,15 @@ return {
    end
   return uns
   end,
-   bytecode = string.byte(data),
    reverse = string.reverse(data),
    fromascii = function() return data end,
    toascii = function()
-
-   end
+    local asciiString = ""
+    for i = 1, #data do
+        asciiString = asciiString .. "\\" .. tostring(string.byte(data, i))
+    end
+    return asciiString
+  end
 }
    elseif type(data) == "table" then
 return {
@@ -176,6 +182,28 @@ return {
   end
  }
   end
+end)
+
+getgenv().httpget = newcclosure(function(link)
+  return request({Url = link, Method = "GET",}).Body
+end)
+
+getgenv().isprivateserver = newcclosure(function()
+  for _, server in next, game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data do
+   if server.id == game.JobId then
+return false
+  end
+ end
+   return true
+end)
+
+getgenv().getplaceinfo = newcclosure(function()
+  return {
+     universeid = tonumber(string.gsub(httpget("https://apis.roblox.com/universes/v1/places/" .. game.PlaceId .. "/universe"), "%D", "")),
+     creatorinfo = game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://users.roproxy.com/v1/users/" .. tostring(game.CreatorId))),
+     thumbnail = "https://www.roblox.com/asset-thumbnail/image?assetId=" .. game.PlaceId .. "&width=432&height=432&format=png",
+     getservers = game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data
+  }
 end)
 
 getgenv().getproperties = newcclosure(function(instance)
