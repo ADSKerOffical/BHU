@@ -254,3 +254,11 @@ getgenv().isrenderproperty = newcclosure(function(var, prop)
   if ishiddenproperty(var, prop) == nil then return nil end
   return not ishiddenproperty(var, prop)
 end)
+
+getgenv().protect_gui = newcclosure(function(obj)
+   protect = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+ if not checkcaller() and self == obj and table.find({"Destroy", "Remove", "GetFullName", "FindFirstChild", "GetChildren", "GetDescendants", "FindFirstChildOfClass", "FindFirstChildWhichA", "GetAttributes"}, getnamecallmethod()) then
+return nil end
+   return protect(self, ...)
+   end))
+end)
