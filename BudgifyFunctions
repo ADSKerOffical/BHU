@@ -189,12 +189,18 @@ getgenv().httpget = newcclosure(function(link)
 end)
 
 getgenv().isprivateserver = newcclosure(function()
-  for _, server in next, gettablesarray(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Desc&limit=100")).data, game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
-   if server.id == game.JobId then
+  local cursor
+  repeat
+response = game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?/sortOrder=Asc&limit=100" .. (cursor and "&cursor=" .. cursor or "")))
+
+   for _, server in next, response.data do
+      if server.id == game.JobId then
 return false
-  end
- end
-   return true
+     end
+   end
+ cursor = response.nextPageCursor
+   until not cursor
+  return true
 end)
 
 getgenv().getplaceinfo = newcclosure(function()
