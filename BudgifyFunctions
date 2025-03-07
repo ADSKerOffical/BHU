@@ -262,3 +262,57 @@ return nil end
    return protect(self, ...)
    end))
 end)
+
+getgenv().safeerror = newcclosure(function(text)
+  task.spawn(function()
+error(text, 0)
+  end)
+end)
+
+getgenv().islink = newcclosure(function(str)
+    local suc = pcall(function() return game:HttpGetAsync(str) end)
+    return suc
+end) 
+
+getgenv().filetype = newcclosure(function(file)
+   if isfile(file) then
+     return typeof(readfile(file))
+   end
+   return nil
+end)
+
+getgenv().vtype = newcclosure(function(file, datatype)
+   if isfile(file) and typeof(datatype) == "string" then
+     return typeof(readfile(file)) == datatype
+   end
+   return nil
+end)
+
+getgenv().blocklink = newcclosure(function(link)
+  block = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+    if self == game and string.find(getnamecallmethod(), "Http") then
+      if islink((...)) and (...) == link then
+  safeerror("Budgify: attempt to call a forbidden link")
+  return nil
+      end
+    end
+     return block(self, ...)
+  end))
+end)
+
+getgenv().httpjdecode = newcclosure(function(link)
+  return game.HttpService:JSONDecode(request({Url = link, Method = "GET",}).Body)
+end)
+
+getgenv().fromascii = newcclosure(function(text)
+  return text
+end)
+
+getgenv().isjson = newcclosure(function(link)
+  if islink(link) then
+    local suc = pcall(function() return httpjdecode(link) end)
+    return suc
+   else
+safeerror("Param is not a link")
+  end
+end)
