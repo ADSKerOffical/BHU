@@ -1,0 +1,21 @@
+local HookTableWithLinks = {}
+local copiedhok, copiedhook = clonefunction(hookmetamethod), clonefunction(hookfunction)
+
+gh = copiedhok(game, "__namecall", newcclosure(function(self, ...)
+   if self  == game and string.find(getnamecallmethod(), "Http") then
+ if not table.find(HookTableWithLinks, unpack({...})) then
+  table.insert(HookTableWithLinks, unpack({...}))
+  print(unpack({...}))
+ end
+     return gh(self, ...)
+   end
+  return gh(self, ...)
+end))
+
+pp = copiedhook(request, newcclosure(function(sourc, ...)
+   if not table.find(HookTableWithLinks, sourc.Url) then
+    table.insert(HookTableWithLinks, sourc.Url)
+    print(sourc.Url)
+   end
+  return pp(sourc, ...)
+end))
