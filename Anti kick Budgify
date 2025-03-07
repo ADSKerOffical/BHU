@@ -1,0 +1,7 @@
+anti = hookmetamethod(game.Players, "__namecall", newcclosure(function(self, ...)
+   if not checkcaller() and self == game.Players.LocalPlayer and table.find({"destroy", "kick", "remove"}, getnamecallmethod():lower()) then
+  warn("Budgify: an attempt to destroy a player has been eliminated")
+return nil
+    end
+   return anti(self, ...)
+end))
