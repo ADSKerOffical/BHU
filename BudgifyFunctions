@@ -316,3 +316,39 @@ getgenv().isjson = newcclosure(function(link)
 safeerror("Param is not a link")
   end
 end)
+
+getgenv().isrobloxmodule = newcclosure(function(ms)
+ if typeof(ms) == "Instance" and ms:IsA("ModuleScript") then
+  local suc = pcall(function()
+ return getrenv().require(ms)
+  end)
+  return suc
+   else
+  error("The code provided is not ModuleScript", 0)
+ end
+end)
+
+getgenv().decompile = newcclosure(function(ms)
+  if typeof(ms) == "Instance" and ms:IsA("ModuleScript") then
+return getrenv().require(ms)
+  end
+end)
+
+getgenv().getrobloxmodules = newcclosure(function()
+  local tabl = {}
+   for _, modul in next, game:GetDescendants() do
+     if modul:IsA("ModuleScript") and isrobloxmodule(modul) then
+ table.insert(tabl, modul)
+     end
+   end
+  return tabl
+end)
+
+getgenv().getmoduleinfo = newcclosure(function(ms)
+  return {
+    name = ms:GetFullName(),
+    robloxmodule = isrobloxmodule(ms),
+    scriptbyte = getscriptbytecode(ms),
+    scripthash = getscripthash(ms)
+  }
+end)
