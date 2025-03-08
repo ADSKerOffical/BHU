@@ -1,0 +1,127 @@
+Объяснение функций:
+
+1) checkcaller(): bool – возвращает true если скрипт или перехватчик был выполнен со стороны клиента
+
+2) setfpscap(number): void – ставит определённый фпс (по умолчанию 0)
+
+3) getfpscap(): number – получает посатвленный фпс
+
+4) queue_on_teleport(string): void – запускает строку после телепортации в плейс
+
+5) readfile(filename): string – прочитывает файл в памяти клиента если он есть
+
+6) getgc(): table – получает все элементы в памяти игры
+
+7) getgenv(): void – тоже самое что и _G но переменную можно будет использовать без потребности писать _G
+
+8) setreadonly(table, bool): void – замораживает или размораживает таблицу
+
+9) getrawmetatable(table): table – получает доступ к метатаблицы у таблицы или userdata игнорируя все защиты
+
+10) hookfunction(functionold, functionnew): void – перехватывает функцию заменяя старую на новую. пример: hok = hookfunction(print, warn)
+
+11) hookmetamethod(environment, metamethod, functionnew): void – перехватывает таблицу или юзердату. пример: op = hookmetamethod(game, "__index", function(self, ...) где self это что именно запустило этот метод, а (...) это то что вернуло у метаметода
+
+12) isreadonly(table): bool – проверяет заморожена ли таблица
+
+13) newcclosure(function): function – делает обвёртку для функции делая её типо написаную на C тем самым защищая её от debug библиотеки (но не debug.getinfo)
+
+14) iscclosure(function): bool – проверяет является ли функция C
+
+15) islclosure(function): bool – проверяет написана ли функция на Lua
+
+16) getscripts(): table – получает все LuaSourceContainer
+
+17) getreg(): table – получает Lua регистр
+
+18) getrenv(): table – получает "реальное" окружение у LocalScript
+
+19) isfunctionhooked(function): bool – проверяет подвергается ли функция перехвату
+
+20) ishooked(var): bool – проверяет является ли переменная перехватчиком
+
+21) gethiddenproperty(instance, property): value – получает спрятанное значение у instance 
+
+22) sethiddenproperty(instance, property, value): void – ставит значение у спрятанного параметра у instance
+
+23) gethwid(): string – получает айди клиента (как айпи)
+
+24) gethui(): Instance – почти тоже самое что и game.CoreGui но дополнительно создаёт несколько обёрток создавая защиту
+
+25) protect_gui(gui: ScreenGui): void – защищает гуи и все его элементы от метаметодов
+
+26) getfflag(fflag: string): value – получает значение у Fast Flag
+
+27) setfflag(fflag: string, value: string): void – ставит значение для Fast Flag
+
+28) setsimulationradius(min, max): void – ставит радиус симуляции у локального игрока
+
+29) getnilinstances(): table – получает все объекты в памяти игры которые равны nil и при этом восстанавливая их
+
+30) clonefunction(function): function – просто копирует функцию
+
+31) isscriptable(class, property): bool – проверяет является ли параметр readonly
+
+32) setscriptable(class, property, value): void – делает так чтобы readonly параметр можно было изменить но не только для одного instance а у всего класса
+
+33) getthreadidentity(): number – получает контекст выполнения скриптов (по умолчанию 8 – Replicate)
+
+34) setthreadidentity(number): voud – ставит контекст выполнения скриптов
+
+35) getconnections(RBXScriptSignal): table – получает все соединения у объекта у этого события
+
+36) firesignal(RBXScriptSignal): void – симулирует активацию всех соеденений у объекта у этого события 
+
+37) fireproximityprompt(ProximityPrompt, index): void – симулирует ProximityPrompt и индекс тоже по приколу
+
+38) fireclickdetector(ClickDetector): void – симулирует ClickDetector
+
+39) writefile(filename: string): void – создаёт новый файл или редактирует его
+
+40) isfile(filename: string): bool – проверяет является ли файл действительно файлом
+
+41) makefolder(foldername: string): void – создаёт папку
+
+42) listfiles(foldername: string): table – получает все файлы у папки
+
+43) isfolder(foldername: string): bool – проверяет является ли папка действительно папкой (файлов)
+
+44) isnetworkowner(BasePart): bool – проверяет является ли часть под контролем локального игрока (не работает идеально)
+
+45) getnamecallmethod(): string – получает namecall который запускается у перехваченной функции (можно использовать только в перехватчиках)
+
+46) getcallingscript(): Instance – получает скрипт который сейчас запускается
+
+47) getinstances(): table – просто получает все объекты в игре
+
+48) getloadedmodules(): table – получает все загруженые ModuleScript 
+
+49) getcustomasset(filename: string): string – получает кастомный ассет по только что сделаному файлу (png, jpg, mp3 и т.д)
+
+50) firetouchinterest(BasePart1, BasePart2, index): void – симулирует прикосновение BasePart1 к BasePart2 а индекс по приколу
+
+51) isrbxactive(): bool – проверяет закрыто ли окно роблокса
+
+52) keypress(byte: number): void – симулирует нажатие кнопки по его байту
+
+53) getscriptbytecode(LuaSourceContainer): string – получает байт код у скрипта
+
+54) getscripthash(LuaSourceContainer): string – получает кэш у скрипта
+
+55) request(table): string or void – тоже самое что и RequestInternal но на стороне клиента
+
+56) dumpstring(LuaSourceContainer): string – возвращает форматированый скрипт код для исходного кода
+
+57) decompile(LuaSourceContainer, mode: bool): string – декомпилирует (расшифровывает) скрипт и возвращает этот скрипт
+
+58) setnamecallmethod(namecall: string): void – ставит метаметод __namecall для перехваченного объекта
+
+59) getspecialinfo(Instance: MeshPart, Terrain, UnionOperation): table – получает дополнительную информацию о частях
+
+60) saveinstance(tablemodes: table): void– сохраняет игру в workspace папку 
+
+61) cloneref(Instance): Instance – копирует ссылку на объект 
+
+62) identifyexecutor(): string – получает название эксплоита 
+
+63) getexecutorname(): string – получает название эксплоита с версией
