@@ -1,0 +1,12 @@
+antim = hookmetamethod(game.TextChatService, "__namecall", newcclosure(function(self, ...)
+ if game.TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+    if checkcaller() and self == game.TextChatService.TextChannels.RBXGeneral and getnamecallmethod() == "SendAsync" and string.find((...):lower(), "lukas") then
+  return nil
+    end
+     else
+    if checkcaller() and self == game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest and getnamecallmethod() == "FireServer" and string.find((...):lower(), "lukas") then
+  return nil
+    end
+  end
+ return antim(self, ...)
+end))
