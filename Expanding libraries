@@ -1,0 +1,63 @@
+setreadonly(table, false)
+setreadonly(Vector3, false)
+setreadonly(CFrame, false)
+
+getgenv().table.thaw = newcclosure(function(tabl)
+  tabl = table.clone(tabl)
+end)
+
+getgenv().table.length = newcclosure(function(tabl)
+  local num = 0
+   for _, _ in next, tabl do
+     num += 1
+   end
+  return num
+end)
+
+getgenv().table.isarray = newcclosure(function(tabl)
+  if #tabl == table.length(tabl) then
+   return true
+  end
+ return false
+end)
+
+getgenv().table.isdictonary = newcclosure(function(tabl)
+  return #tabl == 0
+end)
+
+getgenv().table.ishybrid = newcclosure(function(tabl)
+  if not table.isdictonary(tabl) and #tabl ~= table.length(tabl) then
+ return true
+  end
+ return false
+end)
+
+getgenv().table.toarray = newcclosure(function(tabl)
+  local array = {}
+   for index, value in next, tabl do
+     table.insert(array, rawget(tabl, index))
+   end
+  return array
+end)
+
+getgenv().Vector3.inf = Vector3.new(math.huge, math.huge, math.huge)
+
+getgenv().Vector3.rotation = newcclosure(function()
+  return Vector3.new(self.CFrame.LookVector.X, self.CFrame.UpVector.Y, self.CFrame.RightVector.Z)
+end)
+
+getgenv().CFrame.Rotation = newcclosure(function()
+  return CFrame.new(0, 0, 0, self.CFrame.LookVector, self.CFrame.UpVector)
+end)
+
+getgenv().CFrame.LeftVector = newcclosure(function()
+  return -(self.CFrame.RightVector)
+end)
+
+getgenv().CFrame.DownVector newcclosure(function()
+  return -(self.CFrame.UpVector)
+end)
+
+setreadonly(table, true)
+setreadonly(Vector3, true)
+setreadonly(CFrame, true)
