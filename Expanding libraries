@@ -51,11 +51,11 @@ getgenv().CFrame.Rotation = newcclosure(function()
 end)
 
 getgenv().CFrame.LeftVector = newcclosure(function()
-  return -(self.CFrame.RightVector)
+  return -self.CFrame.RightVector
 end)
 
-getgenv().CFrame.DownVector newcclosure(function()
-  return -(self.CFrame.UpVector)
+getgenv().CFrame.DownVector = newcclosure(function()
+  return -self.CFrame.UpVector
 end)
 
 setreadonly(table, true)
