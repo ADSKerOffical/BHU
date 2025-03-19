@@ -352,3 +352,12 @@ getgenv().getmoduleinfo = newcclosure(function(ms)
     scripthash = getscripthash(ms)
   }
 end)
+
+getgenv().setplaceid = newcclosure(function(id: number): void
+ local hook; hook = hookmetamethod(game, "__index", newcclosure(function(self, key)
+  if self == game and key == "PlaceId" then
+   return id
+  end
+   return hook(self, key)
+ end))
+end)
