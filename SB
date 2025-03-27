@@ -44,3 +44,10 @@ workspace.DescendantAdded:Connect(function(class)
     setvulnerability(class)
   end
 end)
+
+game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification";
+     Text = "Made by ADSKer";
+     Icon = "rbxassetid://16336200609";
+     Duration = "3.5";
+ })
