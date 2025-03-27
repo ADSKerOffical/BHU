@@ -1,0 +1,46 @@
+game.Players.LocalPlayer.SimulationRadius = math.huge
+sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", math.huge)
+sethiddenproperty(game.Players.LocalPlayer, "MaximumSimulationRadius", math.huge)
+
+game.Players.LocalPlayer.SimulationRadiusChanged:Connect(function()
+  game.Players.LocalPlayer.SimulationRadius = math.huge
+  sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", math.huge)
+  sethiddenproperty(game.Players.LocalPlayer, "MaximumSimulationRadius", math.huge)
+end)
+
+local function setvulnerability(part: BasePart): void
+  sethiddenproperty(part, "LocalSimulationValidation", 0)
+  sethiddenproperty(part, "NetworkIsSleeping", false)
+   part.Changed:Connect(function()
+     if gethiddenproperty(part, "LocalSimulationValidation") ~= 0 or gethiddenproperty(part, "NetworkIsSleeping") then
+       sethiddenproperty(part, "LocalSimulationValidation", 0)
+       sethiddenproperty(part, "NetworkIsSleeping", false)
+     end
+  end)
+end
+
+local function setweakling(player)
+  player.SimulationRadius = 0
+  sethiddenproperty(player, "MaxSimulationRadius", 0)
+  sethiddenproperty(player, "MaximumSimulationRadius", 0)
+end
+
+game:GetService("RunService").Heartbeat:Connect(function()
+  for _, player in next, game.Players:GetPlayers() do
+    if player ~= game.Players.LocalPlayer then
+      setweakling(player)
+    end
+  end
+end)
+
+for _, part in next, workspace:GetDescendants() do
+  if part:IsA("BasePart") and part.Anchored == false then
+    setvulnerability(part)
+  end
+end
+
+workspace.DescendantAdded:Connect(function(class)
+  if class:IsA("BasePart") then
+    setvulnerability(class)
+  end
+end)
