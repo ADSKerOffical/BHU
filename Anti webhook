@@ -1,0 +1,57 @@
+local realip: string = game:HttpGetAsync("http://ipinfo.io/ip")
+local request = request or (syn and syn.request)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/BHU/refs/heads/main/Table%20library%20expanding"))()
+
+if not request then
+ game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification",
+     Text = "The script does not work on your executor",
+     Icon = "rbxassetid://4283254578",
+     Duration = 7,
+ })
+  return
+end
+
+local hook; hook = hookfunction(request, newcclosure(function(result)
+  if table.find(result, "Url") ~= nil and (string.find(result.Url, "discord") and result.Method == "POST") or string.find(result.Url, "discord.com/api/webhooks") then
+print(result.Url)
+game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification",
+     Text = "Was an attempt to steal data with discord link " .. result.Url,
+     Icon = "rbxassetid://2592670449",
+     Duration = 10,
+ })
+     return nil
+  end
+  if table.find(result, "Body") ~= nil and typeof(result.Body) == "table" and (result.Method == "POST" and table.deepfind(result.Body, realip) or table.deepfind(result.Body, game:GetService("RbxAnalysticsService"):GetClientId()) or (gethwid and gethwid() and table.find(result.Body, gethwid()) ) ) then
+print(result.Url)
+game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification",
+     Text = "Was an attempt to steal data with link " .. result.Url,
+     Icon = "rbxassetid://4283254578",
+     Duration = 10,
+ })
+    return nil
+  end
+  return hook(result)
+end))
+
+game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification",
+     Text = "Anti webhook by ADSKer",
+     Icon = "rbxassetid://16336200609",
+     Duration = 10,
+ })
+ 
+ --[[
+  clonefunction cannot bypass it:
+  
+local testhook = clonefunction(request)
+
+local hook; hook = hookfunction(testhook, newcclosure(function(result)
+ print(result.Url)
+   return hook(result)
+end))
+
+print(testhook({Url = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/UNC%20test", Method = "GET",})) -- print request Url and testhook options
+ ]]
