@@ -1,5 +1,7 @@
 setreadonly(table, false)
 
+getgenv().table.meta = {}
+
 getgenv().table.thaw = newcclosure(function(tabl)
   makewriteable(tabl)
 end)
@@ -36,7 +38,7 @@ getgenv().table.toarray = newcclosure(function(tabl)
  end
  
   local array = {}
-   for index, value in next, tabl do
+   for index, value in ipairs(tabl) do
      table.insert(array, rawget(tabl, index))
    end
   return array
@@ -106,6 +108,26 @@ getgenv().table.getinfo = newcclosure(function(tabl)
   return infofake
 end)
 
+getgenv().table.deepfind = newcclosure(function(tabl: table, value: string)
+  for i, v in next, tabl do
+    if v == value then
+      return v
+    end
+    if typeof(v) == "table" and v ~= value then
+     local result = deepfind(v, value)
+       if result then return result end
+    end
+  end
+end)
+
+getgenv().table.findkey = newcclosure(function(tabl: table, key: string)
+  for i, v in next, tabl do
+    if i == key then
+      return v
+    end
+  end
+end)
+
 getgenv().table.getprotos = newcclosure(function(tabl)
   local res = {}
     for _, proto in next, tabl do
@@ -114,6 +136,20 @@ getgenv().table.getprotos = newcclosure(function(tabl)
       end
     end
   return res
+end)
+
+getgenv().table.meta.get = getrawmetatable 
+getgenv().table.meta.set = setrawmetatable
+
+getgenv().table.meta.has = newcclosure(function(tabl: table): bool
+  return (typeof(tabl) == "table" or typeof(tabl) == "Instance") and getrawmetatable(tabl) ~= nil
+end)
+
+getgenv().table.meta.isprotected = newcclosure(function(tabl: table): bool
+  if getmetatable(tabl) ~= nil and typeof(getmetatable(tabl)) ~= "table" then
+    return true
+  end
+  return false
 end)
 
 setreadonly(table, true)
