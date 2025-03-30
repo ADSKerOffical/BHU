@@ -1,6 +1,16 @@
 local realip: string = game:HttpGetAsync("http://ipinfo.io/ip")
-local request = request or (syn and syn.request)
+local request = request or (syn and syn.request) or http_request or (http and http.request) or (fluxus and fluxus.request) or HttpPost
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/BHU/refs/heads/main/Table%20library%20expanding"))()
+
+local string_multifind = newcclosure(function(text: string, ...): bool
+  local result = {...}
+   for i, v in ipairs(result) do
+     if string.find(text, v) then
+       return true
+     end
+   end
+   return false
+end)
 
 if not request then
  game.StarterGui:SetCore("SendNotification", {
@@ -13,7 +23,7 @@ if not request then
 end
 
 local hook; hook = hookfunction(request, newcclosure(function(result)
-  if table.find(result, "Url") ~= nil and (string.find(result.Url, "discord") and result.Method == "POST") or string.find(result.Url, "discord.com/api/webhooks") then
+  if table.find(result, "Url") ~= nil and (string.find(result.Url, "discord") and result.Method == "POST") or string_multifind(result.Url, "discord.com/api/webhooks", "discord.com/api/websec") then
 print(result.Url)
 game.StarterGui:SetCore("SendNotification", {
      Title = "Notification",
@@ -23,7 +33,7 @@ game.StarterGui:SetCore("SendNotification", {
  })
      return nil
   end
-  if table.find(result, "Body") ~= nil and typeof(result.Body) == "table" and (result.Method == "POST" and table.deepfind(result.Body, realip) or table.deepfind(result.Body, game:GetService("RbxAnalysticsService"):GetClientId()) or (gethwid and gethwid() and table.find(result.Body, gethwid()) ) ) then
+  if table.find(result, "Body") ~= nil and typeof(result.Body) == "table" and (result.Method == "POST" and table.deepfind(result.Body, realip) or table.deepfind(result.Body, game:GetService("RbxAnalysticsService"):GetClientId()) or (gethwid and gethwid() and table.deepfind(result.Body, gethwid()) or table.deepfind(result.Body, game.Players.LocalPlayer.CharacterAppearanceId) ) ) then
 print(result.Url)
 game.StarterGui:SetCore("SendNotification", {
      Title = "Notification",
