@@ -138,6 +138,24 @@ getgenv().table.getprotos = newcclosure(function(tabl)
   return res
 end)
 
+getgenv().table.multifind = newcclosure(function(tabl: table, ...): bool
+  local result = {...}
+   for i, v in ipairs(result) do
+     if table.find(tabl, v) or tabl[v] ~= nil then
+       return true
+     end
+   end
+   return false
+end)
+
+getgenv().table.added = newcclosure(function(tabl, callback)
+  setrawmetatable(tabl, {
+    __newindex = newcclosure(function(tabel, key, value)
+       callback(tabel, key, value)
+    end)
+  })
+end)
+
 getgenv().table.meta.get = getrawmetatable 
 getgenv().table.meta.set = setrawmetatable
 
