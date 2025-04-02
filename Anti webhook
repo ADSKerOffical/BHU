@@ -23,7 +23,7 @@ if not request then
 end
 
 local hook; hook = hookfunction(request, newcclosure(function(result)
-  if table.find(result, "Url") ~= nil and (string.find(result.Url, "discord") and result.Method == "POST") or string_multifind(result.Url, "discord.com/api/webhooks", "discord.com/api/websec") then
+  if table.find(result, "Url") ~= nil and result.Method == "POST" or string_multifind(result.Url, "discord.com/api/webhooks", "discord.com/api/websec") then -- link check 
 print(result.Url)
 game.StarterGui:SetCore("SendNotification", {
      Title = "Notification",
@@ -33,7 +33,7 @@ game.StarterGui:SetCore("SendNotification", {
  })
      return nil
   end
-  if table.find(result, "Body") ~= nil and typeof(result.Body) == "table" and (result.Method == "POST" and table.deepfind(result.Body, realip) or table.deepfind(result.Body, game:GetService("RbxAnalysticsService"):GetClientId()) or (gethwid and gethwid() and table.deepfind(result.Body, gethwid()) or table.deepfind(result.Body, game.Players.LocalPlayer.CharacterAppearanceId) ) ) then
+  if table.find(result, "Body") ~= nil and typeof(result.Body) == "string" and result.Method == "POST" and string_multifind(result.Body, realip, gethwid(), game:GetService("RbxAnalysticsService"):GetClientId(), tostring(game.Players.LocalPlayer.CharacterAppearanceId)) then -- body check
 print(result.Url)
 game.StarterGui:SetCore("SendNotification", {
      Title = "Notification",
@@ -58,7 +58,7 @@ game.StarterGui:SetCore("SendNotification", {
   
 local testhook = clonefunction(request)
 
-local hook; hook = hookfunction(testhook, newcclosure(function(result)
+local hook; hook = hookfunction(request, newcclosure(function(result)
  print(result.Url)
    return hook(result)
 end))
