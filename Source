@@ -2,7 +2,7 @@ local supGames = {
 17750416316, 10218821851, 1758401491, 4850588087, 4522347649,
 9472371402, 16457183958, 11696357981, 119314673491123, 7002808196, 15259246552,
 14735849025, 5709572883, 394773622, 5985232436, 76703229, 662417684, 6205205961,
-4850533156, 2214661900, 6961824067
+4850533156, 2214661900, 6961824067, 10679239752
 }
 
 local bindable = Instance.new("BindableFunction")
@@ -48,6 +48,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/Felipe/
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/SIA51/refs/heads/main/Source.lua"))()
  elseif game.PlaceId == 6961824067 then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/FTAP/refs/heads/main/Source.lua"))()
+ elseif game.PlaceId == 10679239752 then
+loadstring(request({Url = "https://raw.githubusercontent.com/ADSKerOffical/BHU/refs/heads/main/Furry%20Infection", Method = "GET",}).Body)()
  end
    else
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/BHUOriginal/refs/heads/main/Source"))()
