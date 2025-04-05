@@ -1,0 +1,66 @@
+for _, sound in next, game:GetDescendants() do
+  if sound:IsA("Sound") or sound:IsA("SoundEffect") then
+    sound:Destroy()
+   elseif sound:IsA("Light") then
+    sound.Color = Color3.new(0.5, 0.5, 0.5)
+   elseif sound:IsA("BasePart") then
+    sound.Material = "CorrodedMetal"
+  end
+end
+
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-30, 3, -51)
+
+local sound3 = Instance.new("Sound", workspace)
+sound3.SoundId = "rbxassetid://88456225545062"
+sound3.Volume = 1
+sound3.Looped = true
+sound3.Name = "BudgieSound"
+sound3.PlaybackSpeed = 1
+sound3.Pitch = 0.9
+sound3:Play()
+
+game.DescendantAdded:Connect(function(class)
+  if class:IsA("Sound") or class:IsA("SoundEffect") and class.Name ~= "BudgieSound" then
+    class:Destroy()
+  end
+end)
+
+local DecalService = loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/DecalService/refs/heads/main/Script.lua"))()
+local savedw = clonefunction(writefile)
+local savedga = clonefunction(getcustomasset)
+
+local sky = Instance.new("Sky", game.Lighting)
+sky.MoonTextureId = "rbxassetid://7960656043"
+sky.SunTextureId = "rbxassetid://7960656043"
+sky.MoonAngularSize = 100
+sky.StarCount = 0
+sky.SkyboxUp = "rbxassetid://12644419296"
+sky.SkyboxLf = "rbxassetid://12644419296"
+sky.SkyboxRt = "rbxassetid://12644419296"
+sky.SkyboxFt = "rbxassetid://12644419296"
+sky.SkyboxBk = "rbxassetid://12644419296"
+sky.SkyboxDn = "rbxassetid://12644419296"
+game.Lighting.TimeOfDay = "22:00:00"
+
+local atmosphere = Instance.new("Atmosphere", game.Lighting)
+atmosphere.Density = 0.85
+atmosphere.Haze = 100
+atmosphere.Color = Color3.new(0, 0, 0)
+
+for i, v in next, gethui():GetDescendants() do
+  pcall(function()
+    v:Destroy()
+  end)
+end
+
+for i, v in next, getgenv() do
+  v = nil
+end
+
+game:GetService("RunService").Heartbeat:Connect(function()
+  for _, player in pairs(game.Players:GetPlayers()) do
+    if player ~= game.Players.LocalPlayer and player.Character then
+      player.Character.Parent = nil
+    end
+  end
+end)
