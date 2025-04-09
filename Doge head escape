@@ -1,0 +1,166 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Mobile%20Friendly%20Orion')))()
+
+local Window = OrionLib:MakeWindow({Name = "Budgie Hub | Doge head escape", HidePremium = true, IntroEnabled = false, SaveConfig = false, ConfigFolder = "OrionTest"})
+
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddToggle({
+ Name = "Untouchable to dogs",
+ Default = false,
+ Callback = function(Value)
+  hhsh = Value
+     while hhsh and task.wait() do
+for _, part in next, workspace.Maps:GetDescendants() do
+  if part:IsA("BasePart") and part.Parent.Name == "Doge" then
+    part.CanCollide = not hhsh
+    part.CanTouch = not hhsh
+    part.CanQuery = not hhsh
+  end
+end
+     end
+   end    
+})
+
+Tab:AddToggle({
+ Name = "Anti rope",
+ Default = false,
+ Callback = function(Value)
+    gey = Value
+     while gey and task.wait() do
+       if game.Players.LocalPlayer.Character ~= nil then
+         for _, obj in next, game.Players.LocalPlayer.Character:GetDescendants() do
+           if obj:IsA("Constraint") then
+             obj:Destroy()
+           end
+         end
+       end
+     end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Get all cats",
+ Callback = function()
+       for i = 1, 7 do
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Workspace.Maps.StartMap.Collection:FindFirstChild("Ktty" .. i).Body.CFrame
+         repeat task.wait() fireproximityprompt(Workspace.Maps.StartMap.Collection:FindFirstChild("Ktty" .. i).ProximityPrompt, 0) until game.Players.LocalPlayer.Character:FindFirstChild("Ktty" .. i) or game.Players.LocalPlayer.Backpack:FindFirstChild("Ktty" .. i)
+       end
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Workspace.Maps.StartMap.NPCs.Cat1.HitBox.CFrame * CFrame.new(0, -1, 0.5)
+   end    
+})
+
+Tab:AddButton({
+ Name = "Surrender all cats",
+ Callback = function()
+      for _, tool in next, game.Players.LocalPlayer.Backpack:GetDescendants() do
+         if tool:IsA("Tool") or tool:IsA("HopperBin") and tool.Name:find("Kitty") then
+           tool.Parent = game.Players.LocalPlayer.Character
+         end
+      end
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(46, 3, 484)
+   end    
+})
+
+local Section = Tab:AddSection({
+  Name = "Humanoid Doge"
+})
+
+local function getselfdoge()
+  for _, dog in next, workspace.Folder:GetChildren() do
+    if dog.Name:find(game.Players.LocalPlayer.Name) then
+      return dog
+    end
+  end
+end
+
+Tab:AddToggle({
+ Name = "Ignore kill zone",
+ Default = false,
+ Callback = function(Value)
+      for _, part in next, workspace:GetDescendants() do
+         if part:IsA("BasePart") and part.Name == "KillKiller" or part.Name == "KillPart" then
+           part.CanTouch = not Value
+           part.CanQuery = not Value
+         end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Touch everyone",
+ Callback = function()
+      if getselfdoge() and getselfdoge():FindFirstChild("HItBox") then
+        for _, player in next, game.Players:GetPlayers() do
+          if player ~= game.Players.LocalPlayer and player.Character ~= nil and player.Character:FindFirstChild("HumanoidRootPart") then
+           for _, part in next, player.Character:GetDescendants() do
+             if part:IsA("BasePart") then
+               part.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+               part.Massless = true
+             end
+           end
+           for _, part in next, getselfdoge():GetDescendants() do
+             if part:IsA("BasePart") then
+               part.Massless = false
+               part:ResetPropertyToDefault("CustomPhysicalProperties")
+               part.Velocity = Vector3.zero
+               part.AssemblyLinearVelocity = Vector3.zero
+               part.AssemblyAngularVelocity = Vector3.zero
+             end
+           end
+            firetouchinterest(getselfdoge().HItBox, player.Character.HumanoidRootPart, 0)
+           end
+        end
+      end
+   end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Teleport",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddDropdown({
+	Name = "Locations",
+	Default = "",
+	Options = {"Spawn", "Victory"},
+	Callback = function(Value)
+	   if Value == "Spawn" then
+	      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(78, 3, 492)
+	    elseif Value == "Victory" then
+	      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-99, 87, -1050)
+	   end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "Keys",
+	Default = "",
+	Options = {"Red", "Orange", "Yellow", "Green", "Blue", "Purple"},
+	Callback = function(Value)
+	  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Workspace.Maps.StartMap:FindFirstChild("Key Sample " .. Value).CFrame
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "Cats",
+	Default = "",
+	Options = {"1", "2", "3", "4", "5", "6", "7"},
+	Callback = function(Value)
+	    if Workspace.Maps.StartMap.Collection:FindFirstChild("Ktty" .. Value) then
+		 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Workspace.Maps.StartMap.Collection:FindFirstChild("Ktty" .. Value).Body.CFrame
+       end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Creator",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddLabel("ADSKer – The creator of this script")
