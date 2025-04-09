@@ -91,7 +91,7 @@ Tab:AddToggle({
 })
 
 Tab:AddButton({
- Name = "Touch everyone",
+ Name = "Bring all",
  Callback = function()
       if getselfdoge() and getselfdoge():FindFirstChild("HItBox") then
         for _, player in next, game.Players:GetPlayers() do
@@ -115,6 +115,68 @@ Tab:AddButton({
            end
         end
       end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Kill all",
+ Callback = function()
+        if getselfdoge() and getselfdoge():FindFirstChild("HItBox") then
+        for _, player in next, game.Players:GetPlayers() do
+          if player ~= game.Players.LocalPlayer and player.Character ~= nil and player.Character:FindFirstChild("Humanoid") and player.Character:FindFirstChild("HumanoidRootPart") then
+           for _, part in next, player.Character:GetDescendants() do
+             if part:IsA("BasePart") then
+               part.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+               part.Massless = true
+             end
+           end
+           for _, part in next, getselfdoge():GetDescendants() do
+             if part:IsA("BasePart") then
+               part.Massless = false
+               part:ResetPropertyToDefault("CustomPhysicalProperties")
+               part.Velocity = Vector3.zero
+               part.AssemblyLinearVelocity = Vector3.zero
+               part.AssemblyAngularVelocity = Vector3.zero
+             end
+           end
+            firetouchinterest(getselfdoge().HItBox, player.Character.HumanoidRootPart, 0)
+             task.wait(.2)
+            player.Character:BreakJoints()
+            player.Character.Humanoid.Health = 0  
+           end
+        end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Loop bring all",
+ Callback = function()
+       repeat task.wait()
+         getselfdoge().HumanoidRootPart.CFrame = CFrame.new(0, workspace.FallenPartsDestroyHeight + 25, 0)
+          if getselfdoge() and getselfdoge():FindFirstChild("HItBox") then
+        for _, player in next, game.Players:GetPlayers() do
+          if player ~= game.Players.LocalPlayer and player.Character ~= nil and player.Character:FindFirstChild("HumanoidRootPart") then
+           for _, part in next, player.Character:GetDescendants() do
+             if part:IsA("BasePart") then
+               part.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+               part.Massless = true
+             end
+           end
+           for _, part in next, getselfdoge():GetDescendants() do
+             if part:IsA("BasePart") then
+               part.Massless = false
+               part:ResetPropertyToDefault("CustomPhysicalProperties")
+               part.Velocity = Vector3.zero
+               part.AssemblyLinearVelocity = Vector3.zero
+               part.AssemblyAngularVelocity = Vector3.zero
+             end
+           end
+            firetouchinterest(getselfdoge().HItBox, player.Character.HumanoidRootPart, 0)
+           end
+        end
+      end
+       until not getselfdoge()
    end    
 })
 
