@@ -8,6 +8,22 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local table_merger = newcclosure(function(...)
+  local result = {}
+    for _, tabl in next, ({...}) do
+      if typeof(tabl) == "table" then
+        for index, value in next, tabl do
+          table.insert(result, rawget(tabl, index))
+        end
+      end
+    end
+  return result
+end)
+
+getgenv().isnetworkowner = newcclosure(function(part)
+  return (part.ReceiveAge == 0 and gethiddenproperty(part, "NetworkIsSleeping") == false)
+end)
+
 Tab:AddToggle({
  Name = "Untouchable to dogs",
  Default = false,
@@ -43,6 +59,13 @@ Tab:AddToggle({
 })
 
 Tab:AddButton({
+ Name = "Reset character accessories",
+ Callback = function()
+      game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("BecomeOriginalAvatarEvent"):FireServer()
+   end    
+})
+
+Tab:AddButton({
  Name = "Get all cats",
  Callback = function()
        for i = 1, 7 do
@@ -66,7 +89,99 @@ Tab:AddButton({
 })
 
 local Section = Tab:AddSection({
-  Name = "Humanoid Doge"
+ Name = "Humanoid Doge"
+})
+
+local function gethdoge()
+  for _, hum in next, workspace:GetChildren() do
+    if hum.Name == "Humanoid Doge" and hum:FindFirstChild("HItBox") then
+      return hum
+    end
+  end
+end
+
+local function setsrad()
+  sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+  sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", math.huge)
+  sethiddenproperty(game.Players.LocalPlayer, "MaximumSimulationRadius", math.huge)
+end
+
+Tab:AddButton({
+ Name = "Grab all",
+ Callback = function()
+  local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+  local nomor = false
+      repeat task.wait()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = gethdoge().HumanoidRootPart.CFrame
+       setsrad()
+      until nomor == true or game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChildOfClass("RopeConstraint") or not gethdoge()
+      
+      for _, player in next, game.Players:GetPlayers() do
+        if player ~= game.Players.LocalPlayer and player.Character ~= nil and player.Character:FindFirstChild("HumanoidRootPart") then
+          for _, part in next, gethdoge():GetChildren() do
+            if part:IsA("BasePart") and part:FindFirstChild("TouchInterest") then
+              firetouchinterest(part, player.Character.HumanoidRootPart, 0)
+            end
+          end
+        end
+      end
+     nomor = true
+     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+   end    
+})
+
+Tab:AddButton({
+ Name = "Fling all",
+ Callback = function()
+  local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+  local nomor = false
+      repeat task.wait()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = gethdoge().HumanoidRootPart.CFrame
+       gethdoge().HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(0, 10000, 0)
+       setsrad()
+      until nomor == true or game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChildOfClass("RopeConstraint") or not gethdoge()
+      
+      for _, player in next, game.Players:GetPlayers() do
+        if player ~= game.Players.LocalPlayer and player.Character ~= nil and player.Character:FindFirstChild("HumanoidRootPart") then
+          for _, part in next, gethdoge():GetChildren() do
+            if part:IsA("BasePart") and part:FindFirstChild("TouchInterest") then
+              firetouchinterest(part, player.Character.HumanoidRootPart, 0)
+            end
+          end
+        end
+      end
+     nomor = true
+     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+   end    
+})
+
+Tab:AddButton({
+ Name = "Kill all",
+ Callback = function()
+  local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+  local nomor = false
+      repeat task.wait()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = gethdoge().HumanoidRootPart.CFrame
+       setsrad()
+      until nomor == true or game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChildOfClass("RopeConstraint") or not gethdoge()
+      
+      for _, player in next, game.Players:GetPlayers() do
+        if player ~= game.Players.LocalPlayer and player.Character ~= nil and player.Character:FindFirstChild("HumanoidRootPart") then
+          for _, part in next, gethdoge():GetChildren() do
+            if part:IsA("BasePart") and part:FindFirstChild("TouchInterest") then
+              firetouchinterest(part, player.Character.HumanoidRootPart, 0)
+             if isnetworkowner(player.Character.HumanoidRootPart) then player.Character.Humanoid.Health = 0 end
+            end
+          end
+        end
+      end
+     nomor = true
+     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+   end    
+})
+
+local Section = Tab:AddSection({
+  Name = "Humanoid Local Player Doge"
 })
 
 local function getselfdoge()
@@ -150,7 +265,7 @@ Tab:AddButton({
 })
 
 Tab:AddButton({
- Name = "Loop bring all",
+ Name = "Loop void bring all",
  Callback = function()
        repeat task.wait()
          getselfdoge().HumanoidRootPart.CFrame = CFrame.new(0, workspace.FallenPartsDestroyHeight + 25, 0)
@@ -177,6 +292,134 @@ Tab:AddButton({
         end
       end
        until not getselfdoge()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Loop sky bring all",
+ Callback = function()
+       repeat task.wait()
+         getselfdoge().HumanoidRootPart.CFrame = CFrame.new(1e7, 1.75e7, 1e7)
+          if getselfdoge() and getselfdoge():FindFirstChild("HItBox") then
+        for _, player in next, game.Players:GetPlayers() do
+          if player ~= game.Players.LocalPlayer and player.Character ~= nil and player.Character:FindFirstChild("HumanoidRootPart") then
+           for _, part in next, player.Character:GetDescendants() do
+             if part:IsA("BasePart") then
+               part.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+               part.Massless = true
+             end
+           end
+           for _, part in next, getselfdoge():GetDescendants() do
+             if part:IsA("BasePart") then
+               part.Massless = false
+               part:ResetPropertyToDefault("CustomPhysicalProperties")
+               part.Velocity = Vector3.zero
+               part.AssemblyLinearVelocity = Vector3.zero
+               part.AssemblyAngularVelocity = Vector3.zero
+             end
+           end
+            firetouchinterest(getselfdoge().HItBox, player.Character.HumanoidRootPart, 0)
+           end
+        end
+      end
+       until not getselfdoge()
+   end    
+})
+
+Tab:AddButton({
+ Name = "Reset yourself",
+ Callback = function()
+       getselfdoge():BreakJoints()
+   end    
+})
+
+local Section = Tab:AddSection({
+ Name = "Cats"
+})
+
+local getcats = function()
+ local cats = {}
+  for _, tool in next, table_merger(game.Players.LocalPlayer.Backpack:GetDescendants(), game.Players.LocalPlayer.Character:GetDescendants()) do
+    if tool:IsA("Tool") or tool:IsA("HopperBin") and tool.Name:find("Kitty") then
+      for _, eff in next, tool:GetDescendants() do
+        if eff:IsA("Effect") or eff:IsA("Light") or eff:IsA("PostEffect") or eff:IsA("Beam") then
+          eff:Destroy()
+        end
+      end
+      table.insert(cats, tool)
+    end
+  end
+  return cats
+end
+
+Tab:AddTextbox({
+ Name = "Duplicate cats",
+ Default = "",
+ TextDisappear = true,
+ Callback = function(Value)
+   local pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Workspace.Maps.StartMap.Collection:FindFirstChild("Ktty1").Body.CFrame
+    task.wait(.5)
+     for i = 1, Value do
+       task.spawn(function()
+         fireproximityprompt(Workspace.Maps.StartMap.Collection:FindFirstChild("Ktty1").ProximityPrompt, 0)
+       end)
+     end
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+ end   
+})
+
+Tab:AddDropdown({
+	Name = "Cat Transformation",
+	Default = "",
+	Options = {"Wall of cats", "Army of cats", "Drop cats"},
+	Callback = function(Value)
+     game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
+	   if Value == "Wall of cats" then
+	    local cats = getcats()
+	     for _, cat in next, cats do
+	       cat.Handle.Massless = true
+	       cat.GripPos = Vector3.new(math.random(-(#cats / 6.5), #cats / 6.5), math.random(-(#cats / 10), #cats / 5), 0)
+	       cat.Parent = game.Players.LocalPlayer.Character
+	     end
+	   elseif Value == "Army of cats" then
+	    for _, cat in next, getcats() do
+	      cat.Handle.Massless = true
+	      cat.GripPos = Vector3.new(math.random(-(#getcats() / 5), #getcats() / 5), 0, math.random(-(#getcats() / 5), #getcats() / 5))
+	      cat.Parent = game.Players.LocalPlayer.Character
+	    end
+	   elseif Value == "Drop cats" then
+	    for _, cat in next, getcats() do
+	      cat.Parent = game.Players.LocalPlayer.Character
+	      cat.CanBeDropped = true
+	      cat.Parent = workspace
+	    end
+	  end
+	end    
+})
+
+Tab:AddToggle({
+ Name = "Spam cats sound",
+ Default = false,
+ Callback = function(Value)
+   hhs = Value
+      while hhs and task.wait(1) do
+        for _, cat in next, getcats() do
+          cat.Parent = game.Players.LocalPlayer.Character
+          cat:Activate()
+        end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Equip all cats",
+ Callback = function()
+      for _, tool in next, game.Players.LocalPlayer.Backpack:GetDescendants() do
+        if tool:IsA("Tool") or tool:IsA("HopperBin") and tool.Name:find("Kitty") then
+          tool.Parent = game.Players.LocalPlayer.Character
+        end
+      end
    end    
 })
 
