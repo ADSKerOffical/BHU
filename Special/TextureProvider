@@ -29,7 +29,6 @@ Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
 end)
 
 local dsafget = false
-local copafpres = false
 
 local function getasset(str)
   local rbxPosition = string.find(str, "rbx")
@@ -168,6 +167,19 @@ local partTweenn2 = game:GetService("TweenService"):Create(Dis, TweenInfo.new(0.
         TextColor3 = Color3.new(1, 1, 1)
     })
     partTweenn2:Play()
+  end
+end)
+
+local RemoveAll = FindAll:Clone()
+RemoveAll.Parent = Frame
+RemoveAll.Text = "Remove all"
+RemoveAll.Position = UDim2.new(0, 250, 0, 135)
+
+RemoveAll.MouseButton1Click:Connect(function()
+  for _, el in next, List:GetChildren() do
+    if el:IsA("TextButton") then
+      el:Destroy()
+    end
   end
 end)
 
