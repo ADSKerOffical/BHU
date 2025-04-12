@@ -1,0 +1,182 @@
+local TextureProvider = Instance.new("ScreenGui", gethui() or game.CoreGui)
+TextureProvider.ResetOnSpawn = false
+TextureProvider.IgnoreGuiInset = true
+
+local Frame = Instance.new("Frame", TextureProvider)
+Frame.Active = true
+Frame.Draggable = true
+Frame.BorderSizePixel = 0
+Frame.Size = UDim2.new(0, 250, 0, 250)
+Frame.BackgroundTransparency = 0.1
+Frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+Frame.Position = UDim2.new(0, 0, 0, 0)
+
+local List = Instance.new("ScrollingFrame", Frame)
+List.Size = UDim2.new(0, 200, 0, 200)
+List.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+List.ScrollBarThickness = 5
+List.Position = UDim2.new(0, 20, 0, 20)
+List.BorderSizePixel = 0
+List.BackgroundTransparency = 0.1
+
+local Layout = Instance.new("UIGridLayout", List)
+Layout.SortOrder = Enum.SortOrder.LayoutOrder
+Layout.CellSize = UDim2.new(0, 200, 0, 20)
+Layout.CellPadding = UDim2.new(0, 5, 0, 5)
+
+Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+  List.CanvasSize = UDim2.new(0, 0, 0, Layout.AbsoluteContentSize.Y)
+end)
+
+local dsafget = false
+local copafpres = false
+
+local function getasset(str)
+  local rbxPosition = string.find(str, "rbx")
+  if rbxPosition then
+    return string.sub(str, rbxPosition)
+  else
+    return ""
+  end
+end
+
+local function Display(Text)
+  for _, button in next, List:GetChildren() do
+    if button:IsA("TextButton") and button.Text == Text then
+      return 
+    end
+  end
+    local Button = Instance.new("TextButton", List)
+    Button.Text = Text
+    Button.BackgroundColor3 = List.BackgroundColor3
+    Button.TextColor3 = Color3.new(1, 1, 1)
+    Button.TextScaled = true
+    Button.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Button.AnchorPoint = Vector2.new(0.5, 0.5)
+    Button.TextXAlignment = Enum.TextXAlignment.Center
+    Button.Size = UDim2.new(0, 10, 0, 10)
+    Button.BorderSizePixel = 0
+    
+    Button.MouseButton1Click:Connect(function()
+      setclipboard(Button.Text)
+       if dsafget then
+local part = Instance.new("Part", workspace)
+part.CanCollide = false
+part.Anchored = true
+part.Size = Vector3.new(2.5, 2.5, 2.5)
+part.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 8, -5)
+game.Debris:AddItem(part, 10)
+
+local partTweenn2 = game:GetService("TweenService"):Create(part, TweenInfo.new(1.85, Enum.EasingStyle.Exponential), {
+       CFrame = part.CFrame * CFrame.new(0, -5, 0)
+    })
+    partTweenn2:Play()
+
+local asset = getasset(Button.Text)
+ if not asset then return end
+for _, side in next, Enum.NormalId:GetEnumItems() do
+  local decal = Instance.new("Decal", part)
+  decal.Texture = asset
+  decal.Face = side
+end
+       end
+    end)
+end
+
+local Sort = Instance.new("TextBox", Frame)
+Sort.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+Sort.MultiLine = false
+Sort.Text = ""
+Sort.TextSize = Sort.TextSize / 1.25
+Sort.Size = UDim2.new(0, 30, 0, 30)
+Sort.Position = UDim2.new(0, 250, 0, 15)
+Sort.ClearTextOnFocus = false
+Sort.PlaceholderText = "Sort by class"
+Sort.PlaceholderColor3 = Color3.new(1, 1, 1)
+Sort.RichText = true
+Sort.TextColor3 = Color3.new(1, 1, 1)
+Sort.BorderSizePixel = 0
+
+Sort:GetPropertyChangedSignal("Text"):Connect(function()
+  if string.len(Sort.Text) >= 50 then
+    Sort.Text = string.sub(Sort.Text, 1, 50)
+  end
+end)
+
+Sort.FocusLost:Connect(function(ispressed)
+  if Sort.Text == "" or Sort.Text == " " then
+    for _, elem in next, List:GetChildren() do
+      if elem:IsA("TextButton") then
+        elem.Visible = true
+      end
+    end
+    return 
+  end
+  if ispressed then
+    for _, elem in next, List:GetChildren() do
+      if elem:IsA("TextButton") then
+     local class = string.match(elem.Text, "%w+"):lower()
+        if not string.find(Sort.Text:lower(), class) then
+          elem.Visible = false
+        end
+      end
+    end
+  end
+end)
+
+local function haveprop(class, property)
+  local success = pcall(function()
+    return game:GetService("UGCValidationService"):GetPropertyValue(class, property)
+  end)
+  return success
+end
+
+local FindAll = Instance.new("TextButton", Frame)
+FindAll.BackgroundColor3 = Sort.BackgroundColor3
+FindAll.Size = UDim2.new(0, 30, 0, 30)
+FindAll.Position = UDim2.new(0, 250, 0, 55)
+FindAll.TextColor3 = Color3.new(1, 1, 1)
+FindAll.TextScaled = true
+FindAll.Text = "Find all"
+
+FindAll.MouseButton1Click:Connect(function()
+  for _, img in next, workspace:GetDescendants() do
+    if img:IsA("Decal") or img:IsA("Texture") or img:IsA("Beam") or img:IsA("ParticleEmitter") or img:IsA("Trail") or haveprop(img, "Texture") then
+      Display(img.ClassName .. ": " .. img.Texture)
+    elseif img:IsA("Shirt") then
+      Display("Shirt: " .. img.ShirtTemplate)
+    elseif img:IsA("Pants") then
+      Display("Pants: " .. img.PantsTemplate)
+    end
+  end
+end)
+
+local Dis = FindAll:Clone()
+Dis.Text = "Display Image"
+Dis.Parent = Frame
+Dis.Position = UDim2.new(0, 250, 0, 95)
+
+Dis.MouseButton1Click:Connect(function()
+  dsafget = not dsafget
+   if dsafget then
+local partTweenn2 = game:GetService("TweenService"):Create(Dis, TweenInfo.new(0.6, Enum.EasingStyle.Sine), {
+        TextColor3 = Color3.new(0, 1, 0)
+    })
+    partTweenn2:Play()
+   else
+local partTweenn2 = game:GetService("TweenService"):Create(Dis, TweenInfo.new(0.6, Enum.EasingStyle.Sine), {
+        TextColor3 = Color3.new(1, 1, 1)
+    })
+    partTweenn2:Play()
+  end
+end)
+
+game:GetService("Workspace").DescendantAdded:Connect(function(class)
+  if class:IsA("Decal") or class:IsA("Texture") or class:IsA("ParticleEmitter") or class:IsA("Beam") or class:IsA("Trail") or haveprop(class, "Texture") then
+     Display("Decal: " .. class.Texture)
+    elseif class:IsA("Shirt") then
+     Display("Shirt: " .. class.ShirtTemplate)
+    elseif class:IsA("Pants") then
+     Display("Pants: " .. class.PantsTemplate)
+  end
+end)
