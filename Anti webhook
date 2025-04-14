@@ -1,5 +1,5 @@
 local realip: string = game:HttpGetAsync("http://ipinfo.io/ip")
-local request = request or (syn and syn.request) or http_request or (http and http.request) or (fluxus and fluxus.request) or HttpPost
+local request = request or (syn and syn.request) or http_request or (http and http.request) or (fluxus and fluxus.request) or nil
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/BHU/refs/heads/main/Table%20library%20expanding"))()
 
 local string_multifind = newcclosure(function(text: string, ...): bool
@@ -23,7 +23,7 @@ if not request then
 end
 
 local hook; hook = hookfunction(request, newcclosure(function(result)
-  if table.find(result, "Url") ~= nil and result.Method == "POST" or string_multifind(result.Url, "discord.com/api/webhooks", "discord.com/api/websec") then -- link check 
+  if table.find(result, "Url") ~= nil and result.Method == "POST" and string_multifind(result.Url, "discord.com/api/webhooks", "discord.com/api/websec") then -- link check 
 print(result.Url)
 game.StarterGui:SetCore("SendNotification", {
      Title = "Notification",
@@ -33,7 +33,7 @@ game.StarterGui:SetCore("SendNotification", {
  })
      return nil
   end
-  if table.find(result, "Body") ~= nil and typeof(result.Body) == "string" and result.Method == "POST" and string_multifind(result.Body, realip, gethwid(), game:GetService("RbxAnalysticsService"):GetClientId(), tostring(game.Players.LocalPlayer.CharacterAppearanceId)) then -- body check
+  if table.find(result, "Body") ~= nil and typeof(result.Body) == "string" and result.Method == "POST" and string_multifind(result.Body, realip, gethwid(), game:GetService("RbxAnalysticsService"):GetClientId(), tostring(game.Players.LocalPlayer.CharacterAppearanceId), game.Players.LocalPlayer.Name, "inline") then -- body check
 print(result.Url)
 game.StarterGui:SetCore("SendNotification", {
      Title = "Notification",
@@ -48,20 +48,7 @@ end))
 
 game.StarterGui:SetCore("SendNotification", {
      Title = "Notification",
-     Text = "Anti webhook by ADSKer",
+     Text = "Anti stiller by ADSKer",
      Icon = "rbxassetid://16336200609",
      Duration = 10,
  })
- 
- --[[
-  clonefunction cannot bypass it:
-  
-local testhook = clonefunction(request)
-
-local hook; hook = hookfunction(request, newcclosure(function(result)
- print(result.Url)
-   return hook(result)
-end))
-
-print(testhook({Url = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/UNC%20test", Method = "GET",})) -- print request Url and testhook options
- ]]
