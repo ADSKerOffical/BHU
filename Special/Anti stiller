@@ -1,0 +1,54 @@
+local realip: string = game:HttpGetAsync("http://ipinfo.io/ip")
+local request = request or (syn and syn.request) or http_request or (http and http.request) or (fluxus and fluxus.request) or nil
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ADSKerOffical/BHU/refs/heads/main/Table%20library%20expanding"))()
+
+local string_multifind = newcclosure(function(text: string, ...): bool
+  local result = {...}
+   for i, v in ipairs(result) do
+     if string.find(text, v) then
+       return true
+     end
+   end
+   return false
+end)
+
+if not request then
+ game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification",
+     Text = "The script does not work on your executor",
+     Icon = "rbxassetid://4283254578",
+     Duration = 7,
+ })
+  return
+end
+
+local hook; hook = hookfunction(request, newcclosure(function(result)
+  if table.find(result, "Url") ~= nil and result.Method == "POST" and string_multifind(result.Url, "discord.com/api/webhooks", "discord.com/api/websec") then -- link check 
+print(result.Url)
+game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification",
+     Text = "Was an attempt to steal data with discord link " .. result.Url,
+     Icon = "rbxassetid://2592670449",
+     Duration = 10,
+ })
+     return nil
+  end
+  if table.find(result, "Body") ~= nil and typeof(result.Body) == "string" and result.Method == "POST" and string_multifind(result.Body, realip, gethwid(), game:GetService("RbxAnalysticsService"):GetClientId(), tostring(game.Players.LocalPlayer.CharacterAppearanceId), game.Players.LocalPlayer.Name, "inline") then -- body check
+print(result.Url)
+game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification",
+     Text = "Was an attempt to steal data with link " .. result.Url,
+     Icon = "rbxassetid://4283254578",
+     Duration = 10,
+ })
+    return nil
+  end
+  return hook(result)
+end))
+
+game.StarterGui:SetCore("SendNotification", {
+     Title = "Notification",
+     Text = "Anti stiller by ADSKer",
+     Icon = "rbxassetid://16336200609",
+     Duration = 10,
+ })
