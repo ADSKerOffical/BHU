@@ -1,0 +1,256 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Mobile%20Friendly%20Orion')))()
+
+local function GetAssetFromLink(link)
+  local success, response = pcall(function()
+    return game:HttpGet(link)
+  end)
+   
+   if success then
+local Icon = "Lua_Image.png"
+writefile(Icon, response)
+return getcustomasset(Icon)
+  else
+warn("Failed to load asset: ", response)
+return "rbxassetid://0"
+  end
+end
+
+local Window = OrionLib:MakeWindow({Name = "Lua Identifier", HidePremium = true, IntroEnabled = true, SaveConfig = false, ConfigFolder = "OrionTest", IntroText = "Lua Identifier", IntroIcon = GetAssetFromLink("https://i.ibb.co/qYYHyL62/IMG-20250419-124135-063.jpg"), Icon = GetAssetFromLink("https://i.ibb.co/qYYHyL62/IMG-20250419-124135-063.jpg")})
+
+local Tab = Window:MakeTab({
+	Name = "Info",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Tab = Window:MakeTab({
+	Name = "Parts",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+ Name = "Print all local player parts",
+ Callback = function()
+      for _, part in next, game.Players.LocalPlayer.Character:GetDescendants() do
+         if part:IsA("BasePart") then
+           print(part:GetFullName())
+         end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all parts with TouchInterest",
+ Callback = function()
+      local function havetoch(part)
+         return (#getconnections(part.Touched) >= 1 or #getconnections(part.TouchEnded) >= 1)
+      end
+      
+      for _, part in next, Workspace:GetDescendants() do
+         if part:IsA("BasePart") and havetoch(part) then
+           print(part:GetFullName())
+         end
+      end
+   end    
+})
+
+Tab:AddTextbox({
+ Name = "Print all part properties",
+ Default = "",
+ TextDisappear = true,
+ Callback = function(Value)
+  Ge = Value
+   loadstring([[
+     local part = Ge
+      for _, prop in next, game:GetService("ReflectionService"):GetPropertyNames(part.ClassName) do
+        print(prop .. ": " .. part[prop])
+      end
+   ]])()
+ end   
+})
+
+local Tab = Window:MakeTab({
+	Name = "Local Player",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+ Name = "Copy user id",
+ Callback = function()
+      setclipboard(tostring(game.Players.LocalPlayer.CharacterAppearanceId))
+   end    
+})
+
+Tab:AddButton({
+ Name = "Copy client id",
+ Callback = function()
+       setclipboard(game:GetService("RbxAnalysticsService"):GetClientId())
+   end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Place",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+ Name = "Copy place id",
+ Callback = function()
+       setclipboard(tostring(game.PlaceId))
+   end    
+})
+
+Tab:AddButton({
+ Name = "Copy job id",
+ Callback = function()
+      setclipboard(tostring(game.JobId))
+   end    
+})
+
+Tab:AddButton({
+ Name = "Copy universe id",
+ Callback = function()
+       setclipboard(tostring(game.GameId))
+   end    
+})
+
+Tab:AddButton({
+ Name = "Copy session id",
+ Callback = function()
+       setclipboard(tostring(game:GetService("RbxAnalyticsService"):GetSessionId()))
+   end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Scripts and Value Bases",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+ Name = "Print all local player value bases",
+ Callback = function()
+     for _, val in next, game.Players.LocalPlayer:GetDescendants() do
+       if val:IsA("ValueBase") then
+         print(val.ClassName, val:GetFullName(), val.Value)
+       end
+     end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all workspace value bases",
+ Callback = function()
+      for _, val in next, workspace:GetDescendants() do
+        if val:IsA("ValueBase") then
+          print(val.ClassName, val:GetFullName(), val.Value)
+        end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all local scripts",
+ Callback = function()
+      for _, scr in next, game:GetDescendants() do
+         if scr:IsA("LocalScript") then
+           print(scr:GetFullName())
+         end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all base scripts",
+ Callback = function()
+      for _, scr in next, game:GetDescendants() do
+        if scr:IsA("BaseScript") then
+          print(scr:GetFullName(), scr.Source)
+        end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all module scripts",
+ Callback = function()
+       for _, mod in next, game:GetDescendants() do
+         if mod:IsA("ModuleScript") then
+           print(mod:GetFullName())
+         end
+       end
+   end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Tools",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+ Name = "Print equipped tool name",
+ Callback = function()
+       print(game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Name)
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print equipped too texture id",
+ Callback = function()
+       print(game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Texture)
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print equipped tool meshes and texture",
+ Callback = function()
+      for _, mesh in next, game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):GetDescendants() do
+        if mesh:IsA("SpecialMesh") then
+          print("Mesh: ", mesh.MeshId, " Texture: ", mesh.TextureId, " Scale: ", mesh.Scale)
+        end
+      end
+   end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "RemoteEvents",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+ Name = "Print all RemoteEvent and RemoteFunction",
+ Callback = function()
+      for _, rem in next, game:GetDescendants() do
+         if rem:IsA("RemoteEvent") or rem:IsA("RemoteFunction") then
+           print(rem.ClassName, rem:GetFullName())
+         end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all BindableEvent",
+ Callback = function()
+      for _, be in next, game:GetDescendants() do
+        if be:IsA("BindableEvent") then
+          print(be:GetFullName())
+        end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all Remote in ReplicatedStorage",
+ Callback = function()
+      for _, rem in next, game:GetDescendants() do
+         if (rem:IsA("RemoteEvent") or rem:IsA("RemoteFunction")) and rem:IsDescendantOf(game.ReplicatedStorage) or rem:IsDescendantOf(game.RobloxReplicatedStorage) then
+           print(rem:GetFullName())
+         end
+      end
+   end    
+})
