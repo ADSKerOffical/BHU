@@ -1,0 +1,170 @@
+local function GetAssetFromLink(link, name)
+  local success, response = pcall(function()
+    return game:HttpGet(link)
+  end)
+   
+   if success then
+local Icon = name .. ".png"
+writefile(Icon, response)
+return getcustomasset(Icon)
+  else
+warn("Failed to load asset: ", response)
+return "rbxassetid://0"
+  end
+end
+
+local lua_image = GetAssetFromLink("https://i.ibb.co/qYYHyL62/IMG-20250419-124135-063.jpg", "Lua_image")
+
+local tool = Instance.new("Tool", game.Players.LocalPlayer.Backpack)
+tool.Name = "Loading..."
+tool.ToolTip = "Skids, feel my power"
+tool.CanBeDropped = false
+tool.TextureId = lua_image
+tool.Name = "Lua tool"
+
+local handle = Instance.new("Part", tool)
+handle.Name = "Handle"
+handle.Size = Vector3.new(1, 1, 1)
+handle.Color = Color3.new(0, 0, 0.5)
+
+for _, side in next, Enum.NormalId:GetEnumItems() do
+  local decal = Instance.new("Decal", handle)
+  decal.Texture = lua_image
+  decal.Name = "LuaImage"
+  decal.Face = side
+end
+
+local aura = Instance.new("ParticleEmitter", handle)
+aura.Texture = lua_image -- "rbxassetid://26356341"
+aura.Color = ColorSequence.new(Color3.new(1, 1, 1), Color3.new(1, 1, 1), Color3.new(1, 1, 1))
+local rt = {
+  NumberSequenceKeypoint.new(0, 0),
+  NumberSequenceKeypoint.new(0, 0.8),
+  NumberSequenceKeypoint.new(0, 0),
+  NumberSequenceKeypoint.new(1, 1)
+}
+aura.Transparency = NumberSequence.new(rt)
+aura.Speed = NumberRange.new(5, 20)
+aura.Rotation = NumberRange.new(-360, 360)
+aura.RotSpeed = NumberRange.new(-200, 200)
+aura.Size = NumberSequence.new(0, 1)
+aura.Rate = 10
+aura.Drag = 0
+aura.TimeScale = 1
+aura.Brightness = 1
+aura.VelocitySpread = 100
+aura.Acceleration = Vector3.new(0, 0, 0)
+aura.Lifetime = NumberRange.new(0.5, 0.5)
+aura.ZOffset = -1
+aura.LockedToPart = false
+
+local abilities = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+abilities.ResetOnSpawn = true
+abilities.Enabled = false
+
+local execute = Instance.new("TextBox", abilities)
+execute.ClearTextOnFocus = false
+execute.MultiLine = true
+execute.Text = ""
+execute.Size = UDim2.new(0.07, 0.07, 0.07, 7)
+execute.Position = UDim2.new(0.86, 0, 0.4, 0)
+execute.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+execute.TextColor3 = Color3.new(1, 1, 1)
+execute.PlaceholderColor3 = Color3.new(1, 1, 1)
+execute.PlaceholderText = "Execute"
+execute.TextScaled = true
+execute.TextWrapped = true
+
+execute.FocusLost:Connect(function(ispressed)
+   loadstring(execute.Text)()
+   execute.Text = ""
+   
+   local sound = Instance.new("Sound", handle)
+   sound.SoundId = "rbxassetid://93772880751049"
+   sound.Volume = 1
+   sound.PlaybackSpeed = 1
+   sound:Play()
+   game.Debris:AddItem(sound, 4)
+end)
+
+tool.Activated:Connect(function()
+  local mouse = game.Players.LocalPlayer:GetMouse()
+  local luabox = handle:Clone()
+  luabox.Parent = workspace
+  luabox.Shape = "Ball"
+  luabox.Size = Vector3.new(1, 1, 1)
+  luabox.Name = "LuaShoot"
+  luabox.CFrame = CFrame.new(luabox.Position, mouse.Hit.LookVector)
+  luabox.Size = Vector3.new(1, 1, 1)
+  
+  local ue = luabox:FindFirstChildOfClass("ParticleEmitter")
+  ue.Rotation = NumberRange.new(180, 180)
+  ue.Size = NumberSequence.new(0, 2.2)
+  ue.Rate = 75
+  ue.RotSpeed = NumberRange.new(-520, 520)
+  ue.VelocitySpread = 0
+  ue.Speed = NumberRange.new(50, 75)
+  ue.Lifetime = NumberRange.new(1.5, 3)
+  
+  local bv = Instance.new("BodyVelocity", luabox)
+  bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+  bv.Velocity = mouse.Hit.LookVector * 250
+  
+  luabox.Touched:Connect(function(part)
+    if not part:IsDescendantOf(game.Players.LocalPlayer.Character) and part.Name ~= "LuaShoot" then
+      ue.Enabled = false
+      luabox.Anchored = true
+      luabox.CanTouch = false
+      luabox.CanQuery = false
+      
+      for _, par in next, workspace:GetPartBoundsInRadius(luabox.Position, 60) do
+        if par.Anchored == false and not par:IsDescendantOf(game.Players.LocalPlayer.Character) then
+           par.AssemblyLinearVelocity += (luabox.Position - par.Position).Unit * -350
+           par.AssemblyAngularVelocity += Vector3.new(45, 45, 45)
+         elseif par.Parent:IsA("Model") and not par:IsDescendantOf(game.Players.LocalPlayer.Character) and par.Parent:FindFirstChildOfClass("Humanoid") then
+           local humanoid = par.Parent:FindFirstChildOfClass("Humanoid")
+           humanoid.BreakJointsOnDeath = false
+           humanoid:SetStateEnabled(Enum.HumanoidStateType.Died, true)
+           humanoid:TakeDamage(math.huge)
+           humanoid:ChangeState("Dead")
+           humanoid.Health = 0
+           humanoid.Parent.HumanoidRootPart.Velocity += (luabox.Position - humanoid.Parent.HumanoidRootPart.Position).Unit * -350
+           humanoid.Parent.HumanoidRootPart.AssemblyAngularVelocity += Vector3.new(35, 35, 35)
+        end
+      end
+      
+  for _, dec in next, luabox:GetChildren() do
+    if dec:IsA("Decal") and dec.Name == "LuaImage" then
+      local partTweenn2 = game:GetService("TweenService"):Create(dec, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
+        Transparency = 1
+     })
+     partTweenn2:Play()
+    end
+  end
+  
+  local partTweenn2 = game:GetService("TweenService"):Create(luabox, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
+        Size = Vector3.new(50, 50, 50),
+        Transparency = 1
+    })
+    partTweenn2:Play()
+    end
+  end)
+  
+  game.Debris:AddItem(luabox, 20)
+end)
+
+game.Players.LocalPlayer.SimulationRadius = math.huge
+game.Players.LocalPlayer.SimulationRadiusChanged:Connect(function(radius)
+  game.Players.LocalPlayer.SimulationRadius = math.huge
+end)
+
+tool.Equipped:Connect(function()
+  local ff = Instance.new("ForceField", game.Players.LocalPlayer.Character)
+  ff.Name = "Lua defense"
+  abilities.Enabled = true
+end)
+
+tool.Unequipped:Connect(function()
+  abilities.Enabled = false
+  game.Players.LocalPlayer.Character:FindFirstChild("Lua defense"):Destroy()
+end)
