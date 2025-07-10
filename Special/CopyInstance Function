@@ -1,0 +1,24 @@
+local CopyInstance = function(inst: Instance, variablename: string)
+ local savedstr = `local {variablename} = Instance.new("{inst.ClassName}")`
+ local variablename = variablename or "instance"
+  for _, prop in game:GetService("ReflectionService"):GetPropertyNames(inst.ClassName) do
+    local text
+    local value = inst[prop]
+    local propType = typeof(value)
+
+    if value == nil or propType == "nil" then
+      text = "nil"
+    elseif propType == "Instance" then
+      text = value:GetFullName()
+    elseif propType ~= "number" and propType ~= "boolean" and propType ~= "string" and propType ~= "EnumItem" then
+      text = propType .. ".new(" .. tostring(value) .. ")"
+    elseif propType == "string" then
+      text = "\"" .. value .. "\""
+    else
+      text = tostring(value)
+    end
+
+    savedstr = savedstr .. "\n" .. variablename .. "." .. prop .. " = " .. text
+  end
+  setclipboard(savedstr)
+end
