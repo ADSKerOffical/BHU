@@ -130,6 +130,45 @@ Tab:AddButton({
 })
 
 local Tab = Window:MakeTab({
+	Name = "RemoteEvents",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+ Name = "Print all RemoteEvent and RemoteFunction",
+ Callback = function()
+      for _, rem in next, game:GetDescendants() do
+         if rem:IsA("RemoteEvent") or rem:IsA("RemoteFunction") then
+           print(rem.ClassName, rem:GetFullName())
+         end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all BindableEvent",
+ Callback = function()
+      for _, be in next, game:GetDescendants() do
+        if be:IsA("BindableEvent") then
+          print(be:GetFullName())
+        end
+      end
+   end    
+})
+
+Tab:AddButton({
+ Name = "Print all Remote in ReplicatedStorage",
+ Callback = function()
+      for _, rem in next, game:GetDescendants() do
+         if (rem:IsA("RemoteEvent") or rem:IsA("RemoteFunction")) and rem:IsDescendantOf(game.ReplicatedStorage) or rem:IsDescendantOf(game.RobloxReplicatedStorage) then
+           print(rem:GetFullName())
+         end
+      end
+   end    
+})
+
+local Tab = Window:MakeTab({
  Name = "Self",
  Icon = "rbxassetid://4483345998",
  PremiumOnly = false
